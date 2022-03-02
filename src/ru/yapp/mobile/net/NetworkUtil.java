@@ -10,9 +10,9 @@ import ru.yapp.mobile.core.Core3;
 import ru.yapp.mobile.messenger.Messenger;
 
 public final class NetworkUtil {
-    
+
     public static boolean isRunning = false;
-    
+
     private static SocketConnection socketConnection;
 
     public static void init() {
@@ -23,7 +23,7 @@ public final class NetworkUtil {
     public static void connect() {
         if (socketConnection == null) {
             try {
-                socketConnection = (SocketConnection)Connector.open("socket://87.242.76.88:6666", 3);
+                socketConnection = (SocketConnection) Connector.open("socket://87.242.76.88:6666", 3);
                 ReceivePackets.addDIS(socketConnection.openDataInputStream());
                 SendPackets.addDIS(socketConnection.openDataOutputStream());
                 Messenger.a();

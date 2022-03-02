@@ -8,145 +8,141 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.TextBox;
-import ru.yapp.mobile.ScreenCanvas;
 import ru.yapp.mobile.Yapp;
-import ru.yapp.mobile.core.StaticData;
-import ru.yapp.mobile.core.StringUtils;
-import ru.yapp.mobile.core.UiUtil;
+import ru.yapp.mobile.core.Core9;
+import ru.yapp.mobile.core.ResUI;
 
 public final class CommandListener1 implements CommandListener {
-   private Command cmd1;
-   private Command cmd2;
-   static TextBox textBoxMessage;
-   public int int1;
-   public String str1;
-   private static String[] strArr = new String[]{"Написать", "В начало", "В конец", "Очистить сообщения"};
-   private static int[] intArr1 = new int[]{1, 18, 19, 20};
-   public CommandListener3 cmdListener3;
+   private Command e;
+   private Command f;
+   static TextBox a;
+   public int b;
+   public String c;
+   private static String[] g = new String[]{"Написать", "В начало", "В конец", "Очистить сообщения"};
+   private static int[] h = new int[]{1, 18, 19, 20};
+   public CommandListener3 d;
 
    public static String[] a() {
-      return strArr;
+      return g;
    }
 
    public static int[] b() {
-      return intArr1;
+      return h;
    }
 
-   public static void a(CommandListener3 cmdListener3) {
-      cmdListener3.h = 0;
+   public static void a(CommandListener3 var0) {
+      var0.h = 0;
    }
 
    public final void c() {
-      Messenger.cmdListener2Arr[Messenger.b]
-            .b(this.cmdListener3.getUid_())
-            .h = this.cmdListener3.messageDataArr.length - 2;
+      Messenger1.a[Messenger1.b].b(this.d.f()).h = this.d.g.length - 2;
    }
 
-   public static void b(CommandListener3 listener) {
-      if (listener.messageDataArr != null) {
-         listener.messageDataArr[listener.h].a = 0;
-         --listener.h;
-         if (listener.h < 0) {
-            listener.h = 0;
+   public static void b(CommandListener3 var0) {
+      if (var0.g != null) {
+         var0.g[var0.h].a = 0;
+         --var0.h;
+         if (var0.h < 0) {
+            var0.h = 0;
          }
       }
 
    }
 
-   public static void c(CommandListener3 listener) {
-      if (listener.messageDataArr != null) {
-         listener.messageDataArr[listener.h].a = 0;
-         ++listener.h;
-         if (listener.h > listener.messageDataArr.length - 2) {
-            listener.h = listener.messageDataArr.length - 2;
+   public static void c(CommandListener3 var0) {
+      if (var0.g != null) {
+         var0.g[var0.h].a = 0;
+         ++var0.h;
+         if (var0.h > var0.g.length - 2) {
+            var0.h = var0.g.length - 2;
          }
       }
 
    }
 
-   public CommandListener1(CommandListener3 listener) {
+   public CommandListener1(CommandListener3 var1) {
       new Command("Смайлики", 7, 0);
-      this.cmd1 = new Command("Отправить", 4, 0);
-      this.cmd2 = new Command("Назад", 2, 0);
-      this.str1 = "";
-      this.cmdListener3 = listener;
-      UiUtil.formatedImgToolbar.getHeight();
-      UiUtil.imgFormatedMenuBack.getHeight();
+      this.e = new Command("Отправить", 4, 0);
+      this.f = new Command("Назад", 2, 0);
+      this.c = "";
+      this.d = var1;
+      ResUI.formatedImgToolbar.getHeight();
+      ResUI.imgFormatedMenuBack.getHeight();
    }
 
-   public static void d(CommandListener3 listener) {
-      if (listener.messageDataArr != null) {
-         --listener.messageDataArr[listener.h].a;
-         if (listener.messageDataArr[listener.h].a < 0) {
-            int var1 = listener.h--;
-            if (listener.h < 0) {
-               listener.h = 0;
-               listener.messageDataArr[listener.h].a = 0;
+   public static void d(CommandListener3 var0) {
+      if (var0.g != null) {
+         --var0.g[var0.h].a;
+         if (var0.g[var0.h].a < 0) {
+            int var1 = var0.h--;
+            if (var0.h < 0) {
+               var0.h = 0;
+               var0.g[var0.h].a = 0;
                return;
             }
 
-            listener.messageDataArr[var1].a = 0;
-            listener.messageDataArr[listener.h].a = listener.messageDataArr[listener.h].strArr.length - 1;
+            var0.g[var1].a = 0;
+            var0.g[var0.h].a = var0.g[var0.h].b.length - 1;
          }
       }
 
    }
 
    public static void e(CommandListener3 var0) {
-      if (var0.messageDataArr != null) {
-         ++var0.messageDataArr[var0.h].a;
-         if (var0.messageDataArr[var0.h].a > var0.messageDataArr[var0.h].strArr.length - 1) {
+      if (var0.g != null) {
+         ++var0.g[var0.h].a;
+         if (var0.g[var0.h].a > var0.g[var0.h].b.length - 1) {
             int var1 = var0.h++;
-            if (var0.h > var0.messageDataArr.length - 2) {
-               var0.h = var0.messageDataArr.length - 2;
-               var0.messageDataArr[var0.h].a = var0.messageDataArr[var0.h].strArr.length - 1;
+            if (var0.h > var0.g.length - 2) {
+               var0.h = var0.g.length - 2;
+               var0.g[var0.h].a = var0.g[var0.h].b.length - 1;
                return;
             }
 
-            var0.messageDataArr[var1].a = 0;
+            var0.g[var1].a = 0;
          }
       }
 
    }
 
-   public final void a(Graphics g, CommandListener3 listener) {
-      byte var3 = CommandListener3.a(listener.f);
-      int var4 = Messenger.cmdListener2Arr[Messenger.b].a();
-      int var5 = UiUtil.formatedImgToolbar.getHeight();
-      int var6 = UiUtil.imgFormatedMenuBack.getHeight();
-      g.setColor(0xFFFFFF);
-      g.fillRect(0, var5, StaticData.screenWidth, StaticData.screenHeight - var5 - var6);
-      //boolean var7 = false; // todo...
-      g.drawImage(CommandListener2.c[var3], 5, var5, 0);
-      int var14 = 5 + CommandListener2.c[var3].getWidth() + 5;
-      int var8 = StringUtils.a((String)listener.g(), 5);
-      this.int1 = var5 + CommandListener2.c[var3].getHeight() / 2 - UiUtil.allFontImagesHeight[5] / 2;
-      StringUtils.a(g, var14, this.int1, (String)listener.g(), 5);
-      this.int1 = var5 + CommandListener2.c[var3].getHeight() / 2 - UiUtil.allFontImagesHeight[0] / 2;
-      StringUtils.a(g, var14 + var8 + 5, this.int1, (String)CommandListener3.messagerStatusArr[listener.f], 0);
-      this.int1 = var5 + CommandListener2.a[var3].getHeight();
-      if (listener.messageDataArr != null) {
-         for(int i = listener.h; i < listener.messageDataArr.length - 1; ++i) {
-            if (this.int1 <= StaticData.screenHeight - var6) {
-               int colorStateMessage = listener.messageDataArr[i].c ? 0xE1E3E5 : 0xFFFFFF;
-               int var11 = listener.messageDataArr[i].c ? var4 + 1 : var4 + 2;
-               String var12 = listener.messageDataArr[i].time;
+   public final void a(Graphics var1, CommandListener3 var2) {
+      byte var3 = ru.yapp.mobile.messenger.CommandListener3.a(var2.f);
+      int var4 = Messenger1.a[Messenger1.b].a();
+      int var5 = ResUI.formatedImgToolbar.getHeight();
+      int var6 = ResUI.imgFormatedMenuBack.getHeight();
+      var1.setColor(16777215);
+      var1.fillRect(0, var5, ru.yapp.mobile.core.StaticData.screenWidth, ru.yapp.mobile.core.StaticData.screenHeight - var5 - var6);
+      boolean var7 = false;
+      var1.drawImage(ru.yapp.mobile.messenger.CommandListener2.c[var3], 5, var5, 0);
+      int var14 = 5 + ru.yapp.mobile.messenger.CommandListener2.c[var3].getWidth() + 5;
+      int var8 = Core9.a((String)var2.g(), 5);
+      this.b = var5 + ru.yapp.mobile.messenger.CommandListener2.c[var3].getHeight() / 2 - ResUI.allFontImagesHeight[5] / 2;
+      Core9.a(var1, var14, this.b, (String)var2.g(), 5);
+      this.b = var5 + ru.yapp.mobile.messenger.CommandListener2.c[var3].getHeight() / 2 - ResUI.allFontImagesHeight[0] / 2;
+      Core9.a(var1, var14 + var8 + 5, this.b, (String)ru.yapp.mobile.messenger.CommandListener3.a[var2.f], 0);
+      this.b = var5 + ru.yapp.mobile.messenger.CommandListener2.a[var3].getHeight();
+      if (var2.g != null) {
+         for(int var9 = var2.h; var9 < var2.g.length - 1; ++var9) {
+            if (this.b <= ru.yapp.mobile.core.StaticData.screenHeight - var6) {
+               int var10 = var2.g[var9].c ? 14803941 : 16777215;
+               int var11 = var2.g[var9].c ? var4 + 1 : var4 + 2;
+               String var12 = var2.g[var9].e;
 
-               for(int j = listener.messageDataArr[i].a; j < listener.messageDataArr[i].strArr.length; ++j) {
-                  var12 = j > 0 ? "" : var12;
-                  g.setColor(colorStateMessage);
-                  g.fillRect(2, this.int1 - 1, StaticData.screenWidth, UiUtil.allFontImagesHeight[var4] + 2);
-                  StringUtils.a(g, 2, this.int1, (String)(var12 + listener.messageDataArr[i].strArr[j]), var11);
-                  this.int1 = this.int1 + UiUtil.allFontImagesHeight[var4] + 2;
+               for(int var13 = var2.g[var9].a; var13 < var2.g[var9].b.length; ++var13) {
+                  var12 = var13 > 0 ? "" : var12;
+                  var1.setColor(var10);
+                  var1.fillRect(2, this.b - 1, ru.yapp.mobile.core.StaticData.screenWidth, ResUI.allFontImagesHeight[var4] + 2);
+                  Core9.a(var1, 2, this.b, (String)(var12 + var2.g[var9].b[var13]), var11);
+                  this.b = this.b + ResUI.allFontImagesHeight[var4] + 2;
                   var12 = "";
                }
 
-               if (!listener.messageDataArr[i].d) {
-                  listener.messageDataArr[i].d = true;
-                  --Messenger.cmdListener2Arr[Messenger.b].v;
-                  if (Messenger.cmdListener2Arr[Messenger.b].v <= 0) {
-                     Messenger.cmdListener2Arr[Messenger.b].v = 0;
-                     Messenger2.c = false;
+               if (!var2.g[var9].d) {
+                  var2.g[var9].d = true;
+                  --Messenger1.a[Messenger1.b].v;
+                  if (Messenger1.a[Messenger1.b].v <= 0) {
+                     Messenger1.a[Messenger1.b].v = 0;
+                     ru.yapp.mobile.messenger.Messenger2.c = false;
                   }
                }
             }
@@ -155,36 +151,30 @@ public final class CommandListener1 implements CommandListener {
       }
    }
 
-   public final Displayable displayableTextBoxMessage(String msg) {
-      this.str1 = "";
-      textBoxMessage = new TextBox("Сообщение", msg, 512, 0);
-      textBoxMessage.addCommand(this.cmd1);
-      textBoxMessage.addCommand(this.cmd2);
-      textBoxMessage.setCommandListener(this);
-      return textBoxMessage;
+   public final Displayable a(String var1) {
+      this.c = "";
+      a = new TextBox("Сообщение", var1, 512, 0);
+      a.addCommand(this.e);
+      a.addCommand(this.f);
+      a.setCommandListener(this);
+      return a;
    }
 
-   public final void commandAction(Command cmd, Displayable disp) {
-      if (cmd == this.cmd1) {
-         if (textBoxMessage.size() == 0) {
-            Alert alert = new Alert("Ошибка", "Нельзя отправить пустое сообщение.", (Image)null, AlertType.ERROR);
-            Yapp.display.setCurrent(alert);
+   public final void commandAction(Command var1, Displayable var2) {
+      if (var1 == this.e) {
+         if (a.size() == 0) {
+            Alert var3 = new Alert("Ошибка", "Нельзя отправить пустое сообщение.", (Image)null, AlertType.ERROR);
+            Yapp.display.setCurrent(var3);
          } else {
-            Messenger.sendMessage(this.cmdListener3.getUid_(), textBoxMessage.getString());
-            Messenger.cmdListener2Arr[Messenger.b]
-                    .b(this.cmdListener3.getUid_())
-                    .addMessageData(
-                            textBoxMessage.getString(), 
-                            true,
-                            true,
-                            System.currentTimeMillis()
-                    );
-            Yapp.display.setCurrent(ScreenCanvas.screenCanvas);
+            Messenger1.a(this.d.f(), a.getString());
+            Messenger1.a[Messenger1.b].b(this.d.f()).a(a.getString(), true, true, System.currentTimeMillis());
+            Yapp.display.setCurrent(ru.yapp.mobile.ScreenCanvas.screenCanvas);
          }
       } else {
-         if (cmd == this.cmd2) {
-            Yapp.display.setCurrent(ScreenCanvas.screenCanvas);
+         if (var1 == this.f) {
+            Yapp.display.setCurrent(ru.yapp.mobile.ScreenCanvas.screenCanvas);
          }
+
       }
    }
 }

@@ -1,7 +1,7 @@
 package ru.yapp.mobile.gui;
 
-import ru.yapp.mobile.core.StringUtils;
-import ru.yapp.mobile.core.UiUtil;
+import ru.yapp.mobile.core.Core9;
+import ru.yapp.mobile.core.ResUI;
 
 import javax.microedition.lcdui.Graphics;
 
@@ -10,39 +10,39 @@ public final class CheckBox extends ViewElement {
 
    public CheckBox() {
       this.boolean1 = true;
-      this.imgH = UiUtil.img5.getHeight();
+      this.imgH = ResUI.e.getHeight();
       this.k = 2;
       this.imgW = this.imgH;
       this.style = 0;
    }
 
-   public final void a(Graphics g) {
+   public final void a(Graphics var1) {
       this.imgW = this.imgH;
-      g.setColor(0); // black
-      g.fillRect(this.k + 2, this.l + 2, this.imgW - 4, this.imgH - 4);
+      var1.setColor(0);
+      var1.fillRect(this.k + 2, this.l + 2, this.imgW - 4, this.imgH - 4);
       if (!this.isChecked) {
-         g.setColor(255, 255, 255); // white
+         var1.setColor(255, 255, 255);
       } else {
-         g.setColor(0x008FD9); // синий
+         var1.setColor(36825);
       }
 
-      g.fillRect(this.k + 3, this.l + 3, this.imgW - 6, this.imgH - 6);
-      StringUtils.a(g, this.k + this.imgW + StringUtils.a, this.l + (this.imgH - UiUtil.allFontImagesHeight[this.style]) / 2, this.text, this.style);
+      var1.fillRect(this.k + 3, this.l + 3, this.imgW - 6, this.imgH - 6);
+      Core9.a(var1, this.k + this.imgW + Core9.a, this.l + (this.imgH - ResUI.allFontImagesHeight[this.style]) / 2, this.text, this.style);
    }
 
-   public final void b(Graphics g) {
+   public final void b(Graphics var1) {
       this.imgW = this.imgH;
-      g.setColor(0xFF0000); // red
-      g.fillRect(this.k, this.l, this.imgW, this.imgH);
-      g.setColor(0); // black
-      g.fillRect(this.k + 2, this.l + 2, this.imgW - 4, this.imgH - 4);
+      var1.setColor(16711680);
+      var1.fillRect(this.k, this.l, this.imgW, this.imgH);
+      var1.setColor(0);
+      var1.fillRect(this.k + 2, this.l + 2, this.imgW - 4, this.imgH - 4);
       if (!this.isChecked) {
-         g.setColor(255, 255, 255); // white
+         var1.setColor(255, 255, 255);
       } else {
-         g.setColor(0x008FD9); // синий
+         var1.setColor(36825);
       }
 
-      g.fillRect(this.k + 3, this.l + 3, this.imgW - 6, this.imgH - 6);
-      StringUtils.a(g, this.k + this.imgW + StringUtils.a, this.l + (this.imgH - UiUtil.allFontImagesHeight[this.style]) / 2, this.text, this.style);
+      var1.fillRect(this.k + 3, this.l + 3, this.imgW - 6, this.imgH - 6);
+      Core9.a(var1, this.k + this.imgW + Core9.a, this.l + (this.imgH - ResUI.allFontImagesHeight[this.style]) / 2, this.text, this.style);
    }
 }

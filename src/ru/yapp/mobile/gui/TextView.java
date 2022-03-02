@@ -1,7 +1,7 @@
 package ru.yapp.mobile.gui;
 
-import ru.yapp.mobile.core.StringUtils;
-import ru.yapp.mobile.core.UiUtil;
+import ru.yapp.mobile.core.Core9;
+import ru.yapp.mobile.core.ResUI;
 
 import javax.microedition.lcdui.Graphics;
 
@@ -21,12 +21,12 @@ public class TextView extends ViewElement {
       if (this.f != null) {
          int var2 = this.l;
 
-         for(int i = 0; i < this.f.length; ++i) {
+         for(int var3 = 0; var3 < this.f.length; ++var3) {
             if (var2 >= this.a && var2 < this.b) {
-               StringUtils.a(g, this.e[i], var2, this.f[i], this.style);
+               Core9.a(g, this.e[var3], var2, this.f[var3], this.style);
             }
 
-            var2 += UiUtil.allFontImagesHeight[this.style] + 2;
+            var2 += ResUI.allFontImagesHeight[this.style] + 2;
          }
       }
 

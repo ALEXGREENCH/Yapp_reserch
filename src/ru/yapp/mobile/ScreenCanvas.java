@@ -4,15 +4,15 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
-import ru.yapp.mobile.book.BookUtil;
+import ru.yapp.mobile.book.Book;
 import ru.yapp.mobile.browser.BrowserForm;
-import ru.yapp.mobile.core.UiUtil;
+import ru.yapp.mobile.core.ResUI;
 import ru.yapp.mobile.core.StaticData;
 import ru.yapp.mobile.core.BytesContentFactory;
-import ru.yapp.mobile.core.StringUtils;
-import ru.yapp.mobile.messenger.Messenger;
+import ru.yapp.mobile.core.Core9;
+import ru.yapp.mobile.messenger.Messenger1;
 import ru.yapp.mobile.messenger.Messenger2;
-import ru.yapp.mobile.net.NetworkUtil;
+import ru.yapp.mobile.net.SocketConnector;
 import ru.yapp.mobile.net.SendPackets;
 
 public final class ScreenCanvas extends Canvas implements Runnable {
@@ -47,9 +47,9 @@ public final class ScreenCanvas extends Canvas implements Runnable {
         case 0: // Сплэш
             int width = this.getWidth();
             height = this.getHeight();
-            g.setColor(0xFFFFFF);
+            g.setColor(16777215);
             g.fillRect(0, 0, width, height);
-            g.drawImage(UiUtil.imgSplash, width / 2, height / 2, 3);
+            g.drawImage(ResUI.imgSplash, width / 2, height / 2, 3);
             break;
         case 1:
             BrowserForm.setGraphics(g);
@@ -58,7 +58,7 @@ public final class ScreenCanvas extends Canvas implements Runnable {
             Messenger2.setGraphics(g);
             break;
         case 3:
-            BookUtil.setGraphics(g);
+            Book.setGraphics(g);
         }
 
         if (boolean2 && screenMode != 0) {
@@ -68,22 +68,20 @@ public final class ScreenCanvas extends Canvas implements Runnable {
             default:
                 if (textDialog.length() > 0) {
                     //boolean var7 = false; //todo: ?
-                    
-                    // отрисовка диалога
                     height = StaticData.screenHeight / 2;
                     int var4 = (StaticData.screenWidth - 120) / 2;
                     int var5 = (StaticData.screenHeight - height) / 2;
-                    int var6 = UiUtil.allFontImagesHeight[4];
-                    g.setColor(140, 140, 140); // серый
+                    int var6 = ResUI.allFontImagesHeight[4];
+                    g.setColor(140, 140, 140);
                     g.fillRect(var4 + 3, var5 + 3, 120, height);
-                    g.setColor(255, 255, 225); // светло-серый
+                    g.setColor(255, 255, 225);
                     g.fillRect(var4, var5, 120, height);
-                    g.setColor(0); // чёрный
+                    g.setColor(0);
                     g.drawRect(var4, var5, 120, height);
                     g.fillRect(var4, var5, 120, var6);
-                    g.setColor(200, 200, 200); // светло-серый
+                    g.setColor(200, 200, 200);
                     g.fillRect(var4 + 1, var5 + 1, 119, var6 / 2);
-                    StringUtils.a(g, var4 + StringUtils.a, var5 + UiUtil.allFontImagesHeight[4] + 2, 120 - StringUtils.a * 2, height - var6 - 2, textDialog, 0);
+                    Core9.a(g, var4 + Core9.a, var5 + ResUI.allFontImagesHeight[4] + 2, 120 - Core9.a * 2, height - var6 - 2, textDialog, 0);
                 }
             boolean2 = false;
          }
@@ -111,7 +109,7 @@ public final class ScreenCanvas extends Canvas implements Runnable {
             this.calendar = Calendar.getInstance();
             boolean1 = false;
         }
-        if (currentTime - this.timeTrack1 >= 50000L && NetworkUtil.isRunning) {
+        if (currentTime - this.timeTrack1 >= 50000L && SocketConnector.isRunning) {
             BytesContentFactory bitesContentFactory = new BytesContentFactory();
             bitesContentFactory.setType((short)100);
             SendPackets.addByteArrData(bitesContentFactory.bytesArray());
@@ -120,7 +118,7 @@ public final class ScreenCanvas extends Canvas implements Runnable {
         if (currentTime - this.timeTrack2 >= 1000L) {
             this.timeTrack2 = currentTime;
             BrowserForm.prepareRender = true;
-            BookUtil.a = true;
+            Book.a = true;
             Messenger2.b = true;
             boolean2 = true;
             this.calendar.setTime(new Date(currentTime));
@@ -136,12 +134,12 @@ public final class ScreenCanvas extends Canvas implements Runnable {
             } else {
                 str1 = str1 + ":" + var4;
             }
-            for(int i = 0; i < Messenger.cmdListener2Arr.length - 1; ++i) {
-                if (Messenger.cmdListener2Arr[i] != null && Messenger.cmdListener2Arr[i].w != null && Messenger.cmdListener2Arr[i].w.length > 1) {
-                    --Messenger.cmdListener2Arr[i].x;
-                    if (Messenger.cmdListener2Arr[i].x < 0) {
-                        Messenger.e(Messenger.cmdListener2Arr[i].w);
-                        Messenger.cmdListener2Arr[i].w = null;
+            for(int var5 = 0; var5 < Messenger1.a.length - 1; ++var5) {
+                if (Messenger1.a[var5] != null && Messenger1.a[var5].w != null && Messenger1.a[var5].w.length > 1) {
+                    --Messenger1.a[var5].x;
+                    if (Messenger1.a[var5].x < 0) {
+                        Messenger1.e(Messenger1.a[var5].w);
+                        Messenger1.a[var5].w = null;
                     }
                 }
             }
@@ -154,7 +152,7 @@ public final class ScreenCanvas extends Canvas implements Runnable {
             boolean2 = true;
             BrowserForm.prepareRender = true;
             Messenger2.b = true;
-            BookUtil.a = true;
+            Book.a = true;
         } else {
             int var2 = this.getGameAction(var1);
             switch(screenMode) {
@@ -165,13 +163,13 @@ public final class ScreenCanvas extends Canvas implements Runnable {
                     Messenger2.a(var1, var2);
                 return;
                 case 3:
-                    BookUtil.a(var1, var2);
+                    Book.a(var1, var2);
                 default:
             }
         }
    }
 
-    public static void destroy() {
+    public static void close() {
         renderState = false;
     }
 

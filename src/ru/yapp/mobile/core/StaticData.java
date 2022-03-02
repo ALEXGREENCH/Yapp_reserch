@@ -2,7 +2,7 @@ package ru.yapp.mobile.core;
 
 public final class StaticData {
    public static String a = "";
-   public static int connectID = 0; // tmp
+   public static int b = 0;
    public static int screenWidth = 128;
    public static int screenHeight = 0;
    public static int rightSoftKey = 0; // могут быть перепутаны

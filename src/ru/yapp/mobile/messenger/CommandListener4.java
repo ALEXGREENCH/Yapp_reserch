@@ -36,8 +36,8 @@ public final class CommandListener4 implements CommandListener {
       this.c = var5;
    }
 
-   public final void a(String uid__, String str2, byte var3, int var4) {
-      this.n[this.n.length - 1] = new CommandListener3(uid__, str2, var3, var4);
+   public final void a(String var1, String var2, byte var3, int var4) {
+      this.n[this.n.length - 1] = new CommandListener3(var1, var2, var3, var4);
       CommandListener3[] var5 = new CommandListener3[this.n.length + 1];
       System.arraycopy(this.n, 0, var5, 0, this.n.length);
       this.n = null;
@@ -49,7 +49,7 @@ public final class CommandListener4 implements CommandListener {
       int var3 = 0;
 
       for(int var4 = 0; var4 < this.a().length - 1; ++var4) {
-         if (!this.a()[var4].getUid_().equals(var1)) {
+         if (!this.a()[var4].f().equals(var1)) {
             var2[var3] = this.a()[var4];
             ++var3;
          }
@@ -66,7 +66,7 @@ public final class CommandListener4 implements CommandListener {
 
    public final CommandListener3 b(String var1) {
       for(int var2 = 0; var2 < this.n.length - 1; ++var2) {
-         if (this.n[var2].getUid_().equals(var1)) {
+         if (this.n[var2].f().equals(var1)) {
             return this.n[var2];
          }
       }
@@ -142,8 +142,8 @@ public final class CommandListener4 implements CommandListener {
 
    public final void commandAction(Command var1, Displayable var2) {
       if (var1 == this.i) {
-         if (Messenger.cmdListener2Arr[Messenger.b].c(this.h.getString()) == -1) {
-            Messenger.a(this, this.h.getString());
+         if (Messenger1.a[Messenger1.b].c(this.h.getString()) == -1) {
+            Messenger1.a(this, this.h.getString());
             Yapp.display.setCurrent(ScreenCanvas.screenCanvas);
          } else {
             Alert var4 = new Alert("Ошибка", "Такая группа уже существует.", (Image)null, AlertType.ERROR);

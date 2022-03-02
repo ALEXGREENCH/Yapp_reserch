@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import ru.yapp.mobile.ScreenCanvas;
 import ru.yapp.mobile.Yapp;
-import ru.yapp.mobile.book.BookUtil;
+import ru.yapp.mobile.book.Book;
 import ru.yapp.mobile.browser.BrowserForm;
 import ru.yapp.mobile.core.Core3;
 
@@ -35,7 +35,7 @@ public final class ReceivePackets implements Runnable {
    public final void run() {
       while(initObject) {
          if (a && dataInputStream == null) {
-            NetworkUtil.connect();
+            SocketConnector.connect();
             a = false;
          }
 
@@ -45,12 +45,12 @@ public final class ReceivePackets implements Runnable {
             } catch (IOException ioe) {
                socketStoped = true;
                ScreenCanvas.boolean2 = true;
-               NetworkUtil.isRunning = false;
+               SocketConnector.isRunning = false;
             }
          }
 
          if (socketStoped) {
-            NetworkUtil.reconnect();
+            SocketConnector.reconnect();
          }
 
          try {
@@ -67,88 +67,88 @@ public final class ReceivePackets implements Runnable {
       Yapp.Log("RECEIVE COMMAND->" + commandByShort);
       if (commandByShort > 0) {
          int var1 = dataInputStream.readInt();
-         byte[] byteArr;
-         int allReceiveKbData = var1 / 1024;
-         int downloadKbData = 0;;
-         int readBookData;
+         byte[] var2;
+         int var3;
+         int var4;
+         int var5;
          int var10;
          if (commandByShort == 66) {
-            byteArr = new byte[var1];
-            if (allReceiveKbData == 0) {
-               allReceiveKbData = 1;
+            var2 = new byte[var1];
+            if ((var3 = var1 / 1024) == 0) {
+               var3 = 1;
             }
 
             if (BrowserForm.bool1 && Core3.a == 0) {
-               BrowserForm.a = "0/" + allReceiveKbData + "кб";
+               BrowserForm.a = "0/" + var3 + "кб";
                BrowserForm.prepareRender = true;
             }
 
-            
+            var4 = 0;
             boolean var9 = false;
 
-            while(downloadKbData < var1) {
+            while(var4 < var1) {
                var10 = 1024;
-               if (var1 - downloadKbData < 1024) {
-                  var10 = var1 - downloadKbData;
+               if (var1 - var4 < 1024) {
+                  var10 = var1 - var4;
                }
 
-               readBookData = dataInputStream.read(byteArr, downloadKbData, var10);
-               downloadKbData += readBookData;
+               var5 = dataInputStream.read(var2, var4, var10);
+               var4 += var5;
                if (BrowserForm.bool1 && Core3.a == 0) {
-                  BrowserForm.a = downloadKbData / 1024 + "/" + allReceiveKbData + "кб";
+                  BrowserForm.a = var4 / 1024 + "/" + var3 + "кб";
                   BrowserForm.prepareRender = true;
                }
             }
 
             if (BrowserForm.bool1 && Core3.a == 0) {
-               BrowserForm.a = downloadKbData / 1024 + "/" + allReceiveKbData + "кб";
+               BrowserForm.a = var4 / 1024 + "/" + var3 + "кб";
                BrowserForm.prepareRender = true;
             }
 
-            Core3.parsingReceivedPackets(commandByShort, byteArr);
+            Core3.parsing(commandByShort, var2);
             return;
          }
 
          if (commandByShort == 704) {
             Yapp.Log("SYSTEM->" + dataInputStream.readUTF());
-            allReceiveKbData = dataInputStream.readInt();
-            Yapp.Log("BOOK SIZE->" + allReceiveKbData);
-            byteArr = new byte[allReceiveKbData];
-            if ((downloadKbData = allReceiveKbData / 1024) == 0) {
-               downloadKbData = 1;
+            var3 = dataInputStream.readInt();
+            Yapp.Log("BOOK SIZE->" + var3);
+            var2 = new byte[var3];
+            if ((var4 = var3 / 1024) == 0) {
+               var4 = 1;
             }
 
-            BookUtil.downlodBookInfo = "0/" + downloadKbData + "кб";
-            BookUtil.a = true;
-            readBookData = 0;
+            Book.b = "0/" + var4 + "кб";
+            Book.a = true;
+            var5 = 0;
 
-            for(boolean i = false; readBookData < allReceiveKbData; BookUtil.a = true) {
+            for(boolean var6 = false; var5 < var3; Book.a = true) {
                int var7 = 1024;
-               if (allReceiveKbData - readBookData < 1024) {
-                  var7 = allReceiveKbData - readBookData;
+               if (var3 - var5 < 1024) {
+                  var7 = var3 - var5;
                }
 
-               var10 = dataInputStream.read(byteArr, readBookData, var7);
-               readBookData += var10;
-               BookUtil.downlodBookInfo = readBookData / 1024 + "/" + downloadKbData + "кб";
+               var10 = dataInputStream.read(var2, var5, var7);
+               var5 += var10;
+               Book.b = var5 / 1024 + "/" + var4 + "кб";
             }
 
-            BookUtil.downlodBookInfo = readBookData / 1024 + "/" + downloadKbData + "кб";
+            Book.b = var5 / 1024 + "/" + var4 + "кб";
 
             try {
-               BookUtil.bookLoaded(byteArr);
-            } catch (Exception e) {
-               e.printStackTrace();
+               Book.bookLoaded(var2);
+            } catch (Exception var8) {
+               var8.printStackTrace();
             }
 
-            BookUtil.downlodBookInfo = "";
-            BookUtil.a = true;
+            Book.b = "";
+            Book.a = true;
             return;
          }
 
-         byteArr = new byte[var1];
-         dataInputStream.readFully(byteArr);
-         Core3.parsingReceivedPackets(commandByShort, byteArr);
+         var2 = new byte[var1];
+         dataInputStream.readFully(var2);
+         Core3.parsing(commandByShort, var2);
       }
    }
 

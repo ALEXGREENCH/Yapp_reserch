@@ -2,12 +2,12 @@ package ru.yapp.mobile.browser;
 
 import ru.yapp.mobile.ScreenCanvas;
 import ru.yapp.mobile.Yapp;
-import ru.yapp.mobile.book.BookUtil;
+import ru.yapp.mobile.book.Book;
 import ru.yapp.mobile.core.*;
 import ru.yapp.mobile.gui.*;
-import ru.yapp.mobile.messenger.Messenger;
+import ru.yapp.mobile.messenger.Messenger1;
 import ru.yapp.mobile.messenger.Messenger2;
-import ru.yapp.mobile.net.NetworkUtil;
+import ru.yapp.mobile.net.SocketConnector;
 import ru.yapp.mobile.net.SendPackets;
 import ru.yapp.mobile.net.ReceivePackets;
 
@@ -136,36 +136,36 @@ public final class BrowserForm {
             var2 = r - var1;
          }
 
-         int var3 = UiUtil.img3.getWidth();
+         int var3 = ResUI.c.getWidth();
          int var4 = StaticData.screenWidth - var3;
-         graphics.drawRegion(UiUtil.img3, 0, 0, var3, r, 0, var4, s, 20);
-         var3 = UiUtil.img4.getWidth();
+         graphics.drawRegion(ResUI.c, 0, 0, var3, r, 0, var4, s, 20);
+         var3 = ResUI.d.getWidth();
          var4 = StaticData.screenWidth - var3;
-         graphics.drawRegion(UiUtil.img4, 0, 0, var3, var1, 0, var4, s + var2, 20);
+         graphics.drawRegion(ResUI.d, 0, 0, var3, var1, 0, var4, s + var2, 20);
       }
 
    }
 
-   public static void setGraphics2(Graphics g) {
-      int colorNetworkState;
+   public static void setGraphics2(Graphics var0) {
+      int var1;
       if (!bool4 || bool5) {
-         g.drawImage(UiUtil.formatedImgToolbar, 0, 0, 20);
-         StringUtils.a(g, StringUtils.a, (17 - UiUtil.allFontImagesHeight[9]) / 2, (String)titleYappBrowser, 9);
-         g.drawImage(UiUtil.imgFormatedMenuBack, 0, StaticData.screenHeight - 17, 20);
+         var0.drawImage(ResUI.formatedImgToolbar, 0, 0, 20);
+         Core9.a(var0, Core9.a, (17 - ResUI.allFontImagesHeight[9]) / 2, (String)titleYappBrowser, 9);
+         var0.drawImage(ResUI.imgFormatedMenuBack, 0, StaticData.screenHeight - 17, 20);
          if (bool5) {
-            StringUtils.a(g, StringUtils.a, StaticData.screenHeight - 17 + (17 - UiUtil.allFontImagesHeight[9]) / 2, (String)"Выбрать", 9);
+            Core9.a(var0, Core9.a, StaticData.screenHeight - 17 + (17 - ResUI.allFontImagesHeight[9]) / 2, (String)"Выбрать", 9);
          } else {
-            StringUtils.a(g, StringUtils.a, StaticData.screenHeight - 17 + (17 - UiUtil.allFontImagesHeight[9]) / 2, (String)"Меню", 9);
+            Core9.a(var0, Core9.a, StaticData.screenHeight - 17 + (17 - ResUI.allFontImagesHeight[9]) / 2, (String)"Меню", 9);
          }
 
          if (!bool5 && !bool1) {
             if (Core3.vectorData.size() > 1) {
-               colorNetworkState = StringUtils.a((String)"Назад", 9);
-               StringUtils.a(g, StaticData.screenWidth - colorNetworkState - StringUtils.a, StaticData.screenHeight - 17 + (17 - UiUtil.allFontImagesHeight[9]) / 2, (String)"Назад", 9);
+               var1 = Core9.a((String)"Назад", 9);
+               Core9.a(var0, StaticData.screenWidth - var1 - Core9.a, StaticData.screenHeight - 17 + (17 - ResUI.allFontImagesHeight[9]) / 2, (String)"Назад", 9);
             }
          } else {
-            colorNetworkState = StringUtils.a((String)"Отмена", 9);
-            StringUtils.a(g, StaticData.screenWidth - colorNetworkState - StringUtils.a, StaticData.screenHeight - 17 + (17 - UiUtil.allFontImagesHeight[9]) / 2, (String)"Отмена", 9);
+            var1 = Core9.a((String)"Отмена", 9);
+            Core9.a(var0, StaticData.screenWidth - var1 - Core9.a, StaticData.screenHeight - 17 + (17 - ResUI.allFontImagesHeight[9]) / 2, (String)"Отмена", 9);
          }
 
          String msg___ = a;
@@ -181,63 +181,63 @@ public final class BrowserForm {
          }
 
          if (msg___.length() > 0) {
-            int var2 = StringUtils.a((String)msg___, 9);
-            StringUtils.a(g, (StaticData.screenWidth - var2) / 2, StaticData.screenHeight - 17 + (17 - UiUtil.allFontImagesHeight[9]) / 2, (String)msg___, 9);
+            int var2 = Core9.a((String)msg___, 9);
+            Core9.a(var0, (StaticData.screenWidth - var2) / 2, StaticData.screenHeight - 17 + (17 - ResUI.allFontImagesHeight[9]) / 2, (String)msg___, 9);
          }
       }
 
       if (!bool1) {
-         Messenger2.a(g);
+         Messenger2.a(var0);
       }
 
       if (bool4) {
-         if (Messenger2.currentTimeMillis == 0L) {
-            Messenger2.currentTimeMillis = System.currentTimeMillis();
+         if (Messenger2.e == 0L) {
+            Messenger2.e = System.currentTimeMillis();
          }
 
-         if (System.currentTimeMillis() - Messenger2.currentTimeMillis > 2000L) {
+         if (System.currentTimeMillis() - Messenger2.e > 2000L) {
             Messenger2.d = false;
-            Messenger2.currentTimeMillis = 0L;
+            Messenger2.e = 0L;
          }
       } else {
          Messenger2.d = true;
       }
 
       if (bool5) {
-         a(g, authMenuVariants, t);
+         a(var0, authMenuVariants, t);
       }
 
-      colorNetworkState = NetworkUtil.isRunning ? '\uff00' : 0xFF0000;
-      g.setColor(colorNetworkState); // красный если сеть не активна
-      g.fillRect(StaticData.screenWidth / 2 - 1, 0, 2, UiUtil.formatedImgToolbar.getHeight());
+      var1 = SocketConnector.isRunning ? '\uff00' : 16711680;
+      var0.setColor(var1);
+      var0.fillRect(StaticData.screenWidth / 2 - 1, 0, 2, ResUI.formatedImgToolbar.getHeight());
    }
 
-   public static void a(Graphics g, String[] var1, int var2) {
-      int var3 = (12 - UiUtil.allFontImagesHeight[0]) / 2;
+   public static void a(Graphics var0, String[] var1, int var2) {
+      int var3 = (12 - ResUI.allFontImagesHeight[0]) / 2;
       int var4;
       int var5;
       if ((var5 = (var4 = StaticData.screenHeight - var1.length * 12 - 3 - 17) + var2 * 12) < 20) {
          var4 -= var5 - 20;
       }
 
-      g.setColor(255, 255, 255); // белый
-      g.fillRect(0, var4 - 3, 120, var1.length * 12 + 6);
-      int var6 = g.getClipX();
-      int var7 = g.getClipY();
-      int var8 = g.getClipWidth();
-      int var9 = g.getClipHeight();
-      g.setClip(0, var4 - 3, 120, var1.length * 12 + 6);
-      g.drawImage(UiUtil.formatedMenuBg, 0, var4 - 3, 20);
-      g.setClip(var6, var7, var8, var9);
-      g.setColor(0xBE403E); // красно-гранатовый
-      g.drawRect(0, var4 - 3, 120, var1.length * 12 + 6);
+      var0.setColor(255, 255, 255);
+      var0.fillRect(0, var4 - 3, 120, var1.length * 12 + 6);
+      int var6 = var0.getClipX();
+      int var7 = var0.getClipY();
+      int var8 = var0.getClipWidth();
+      int var9 = var0.getClipHeight();
+      var0.setClip(0, var4 - 3, 120, var1.length * 12 + 6);
+      var0.drawImage(ResUI.formatedMenuBg, 0, var4 - 3, 20);
+      var0.setClip(var6, var7, var8, var9);
+      var0.setColor(12468286);
+      var0.drawRect(0, var4 - 3, 120, var1.length * 12 + 6);
 
-      for(int i = 0; i < var1.length; ++i) {
-         if (i == var2) {
-            g.drawImage(UiUtil.formatedMenuSel, 3, var4 + i * 12 + 6, 6);
-            StringUtils.a(g, StringUtils.a, var4 + i * 12 + var3, (String)var1[i], 4);
+      for(int var10 = 0; var10 < var1.length; ++var10) {
+         if (var10 == var2) {
+            var0.drawImage(ResUI.formatedMenuSel, 3, var4 + var10 * 12 + 6, 6);
+            Core9.a(var0, Core9.a, var4 + var10 * 12 + var3, (String)var1[var10], 4);
          } else {
-            StringUtils.a(g, StringUtils.a, var4 + i * 12 + var3, (String)var1[i], 0);
+            Core9.a(var0, Core9.a, var4 + var10 * 12 + var3, (String)var1[var10], 0);
          }
       }
 
@@ -336,10 +336,10 @@ public final class BrowserForm {
             }
 
             if (t == __messagerValue) {
-               if (StaticData.connectID > 0 && Messenger.b > -1) {
-                  if (Messenger.cmdListener2Arr[Messenger.b] == null) {
+               if (StaticData.b > 0 && Messenger1.b > -1) {
+                  if (Messenger1.a[Messenger1.b] == null) {
                      BrowserRender.readInForm();
-                     Messenger2.renderIcqAuthScreen();
+                     Messenger2.a();
                   } else {
                      StaticData.g = 1;
                   }
@@ -357,7 +357,7 @@ public final class BrowserForm {
             }
 
             if (t == __bookValue) {
-               BookUtil.a = true;
+               Book.a = true;
                ScreenCanvas.screenMode = 3;
                ScreenCanvas.boolean2 = true;
             }
@@ -410,10 +410,10 @@ public final class BrowserForm {
                }
 
                if (t == __messagerValue) {
-                  if (StaticData.connectID > 0 && Messenger.b > -1) {
-                     if (Messenger.cmdListener2Arr[Messenger.b] == null) {
+                  if (StaticData.b > 0 && Messenger1.b > -1) {
+                     if (Messenger1.a[Messenger1.b] == null) {
                         BrowserRender.readInForm();
-                        Messenger2.renderIcqAuthScreen();
+                        Messenger2.a();
                      } else {
                         StaticData.g = 1;
                      }
@@ -427,7 +427,7 @@ public final class BrowserForm {
                }
 
                if (t == __bookValue) {
-                  BookUtil.a = true;
+                  Book.a = true;
                   ScreenCanvas.screenMode = 3;
                   ScreenCanvas.boolean2 = true;
                }
@@ -696,32 +696,32 @@ public final class BrowserForm {
    }
 
    // TODO: !!!!!!!
-   private static void a(ViewElement viewElement) {
+   private static void a(ViewElement var0) {
       a = "";
       CheckBox var1 = null;
-      if (viewElement instanceof EditText) {
-         new TextBoxForEditText((EditText)viewElement);
+      if (var0 instanceof EditText) {
+         new TextBoxForEditText((EditText)var0);
          var1 = null;
-      } else if (viewElement instanceof SelectableFormView) {
-         new FormForSelectableView((SelectableFormView)viewElement);
+      } else if (var0 instanceof SelectableFormView) {
+         new FormForSelectableView((SelectableFormView)var0);
          var1 = null;
-      } else if (viewElement instanceof CheckBox) {
-         (var1 = (CheckBox)viewElement).isChecked = !var1.isChecked;
+      } else if (var0 instanceof CheckBox) {
+         (var1 = (CheckBox)var0).isChecked = !var1.isChecked;
          prepareRender = true;
       } else {
-         if (viewElement.boolean1) {
-            if (viewElement.biteArr1 != null && viewElement.biteArr1.length > 0) {
+         if (var0.boolean1) {
+            if (var0.biteArr1 != null && var0.biteArr1.length > 0) {
                try {
-                  Core3.parsingPostUiAction(viewElement.biteArr1);
+                  Core3.parsing(var0.biteArr1);
                   return;
-               } catch (Exception e) {
-                  e.printStackTrace();
+               } catch (Exception var2) {
+                  var2.printStackTrace();
                   return;
                }
             }
 
-            if (viewElement.byteArr2 != null) {
-               SendPackets.b(viewElement.byteArr2);
+            if (var0.byteArr2 != null) {
+               SendPackets.b(var0.byteArr2);
                bool1 = true;
                prepareRender = true;
             }
@@ -742,9 +742,9 @@ public final class BrowserForm {
 
    public static void c() {
       try {
-         StaticData.connectID = Integer.parseInt(uiElementArr[1].text);
+         StaticData.b = Integer.parseInt(uiElementArr[1].text);
       } catch (Exception e) {
-         StaticData.connectID = 0;
+         StaticData.b = 0;
       }
 
       if (uiElementArr[3].text != null) {
@@ -754,11 +754,11 @@ public final class BrowserForm {
       }
 
       if (((CheckBox)getUiElements()[4]).isChecked) {
-         BdUtil.save("yapp-login", Integer.toString(StaticData.connectID).getBytes());
-         BdUtil.save("yapp-password", StaticData.a.getBytes());
+         DB.save("yapp-login", Integer.toString(StaticData.b).getBytes());
+         DB.save("yapp-password", StaticData.a.getBytes());
       } else {
-         BdUtil.save("yapp-login", "".getBytes());
-         BdUtil.save("yapp-password", "".getBytes());
+         DB.save("yapp-login", "".getBytes());
+         DB.save("yapp-password", "".getBytes());
       }
 
       BytesContentFactory bcf = new BytesContentFactory();
@@ -766,7 +766,7 @@ public final class BrowserForm {
       bcf.addByte((byte)1);
       bcf.addUtfString("1.7"); // версия приложения
       SendPackets.addByteArrData(bcf.bytesArray());
-      if (!NetworkUtil.isRunning) {
+      if (!SocketConnector.isRunning) {
          ReceivePackets.a = true;
       }
 
@@ -783,9 +783,9 @@ public final class BrowserForm {
       }
 
       if (isSaveIcqAccount) {
-         BdUtil.save("icq-login", icqLogin.getBytes());
+         DB.save("icq-login", icqLogin.getBytes());
       } else {
-         BdUtil.save("icq-login", "".getBytes());
+         DB.save("icq-login", "".getBytes());
       }
 
       String icqPassword = "";
@@ -794,12 +794,12 @@ public final class BrowserForm {
       }
 
       if (isSaveIcqAccount) {
-         BdUtil.save("icq-password", icqPassword.getBytes());
+         DB.save("icq-password", icqPassword.getBytes());
       } else {
-         BdUtil.save("icq-password", "".getBytes());
+         DB.save("icq-password", "".getBytes());
       }
 
-      Messenger.a((byte)1, icqLogin, icqPassword);
+      Messenger1.a((byte)1, icqLogin, icqPassword);
       StaticData.icqLogin = icqLogin;
       bool1 = true;
       prepareRender = true;

@@ -9,7 +9,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import ru.yapp.mobile.ScreenCanvas;
 import ru.yapp.mobile.Yapp;
-import ru.yapp.mobile.book.BookUtil;
+import ru.yapp.mobile.book.Book;
 import ru.yapp.mobile.browser.BrowserForm;
 import ru.yapp.mobile.browser.BrowserRender;
 import ru.yapp.mobile.gui.EditText;
@@ -18,9 +18,9 @@ import ru.yapp.mobile.gui.Gui4;
 import ru.yapp.mobile.gui.CheckBox;
 import ru.yapp.mobile.gui.ViewElement;
 import ru.yapp.mobile.messenger.CommandListener2;
-import ru.yapp.mobile.messenger.Messenger;
+import ru.yapp.mobile.messenger.Messenger1;
 import ru.yapp.mobile.messenger.Messenger2;
-import ru.yapp.mobile.net.NetworkUtil;
+import ru.yapp.mobile.net.SocketConnector;
 import ru.yapp.mobile.net.SendPackets;
 
 public final class Core3 {
@@ -48,28 +48,7 @@ public final class Core3 {
       }
    }
 
-   /*
-        Команды:
-        66  - 
-        99  - 
-        101 - 
-        103 -
-        104 -
-        105 -
-   `    106 -
-        107 -
-        108 -
-        109 -
-        110 -
-        111 -
-        112 -
-        151 -
-        152 -
-        703 - книги
-        901 - баннер
-        
-   */
-   public static void parsingReceivedPackets(int idCommand, byte[] byteArr) {
+   public static void parsing(int idCommand, byte[] byteArr) {
       Yapp.Log("пришла команда " + idCommand);
       switch(idCommand) {
       case 66:
@@ -93,47 +72,47 @@ public final class Core3 {
          c(byteArr);
          return;
       case 101:
-         Messenger.j(byteArr);
+         Messenger1.j(byteArr);
          return;
       case 103:
-         Messenger.b(byteArr);
+         Messenger1.b(byteArr);
          return;
       case 104:
-         Messenger.a(byteArr);
+         Messenger1.a(byteArr);
          return;
       case 105:
-         Messenger.c(byteArr);
+         Messenger1.c(byteArr);
          return;
       case 106:
-         Messenger.l(byteArr);
+         Messenger1.l(byteArr);
          return;
       case 107:
-         Messenger.g(byteArr);
+         Messenger1.g(byteArr);
          return;
       case 108:
-         Messenger.k(byteArr);
+         Messenger1.k(byteArr);
          return;
       case 109:
-         Messenger.h(byteArr);
+         Messenger1.h(byteArr);
          return;
       case 110:
-         Messenger.d(byteArr);
+         Messenger1.d(byteArr);
          return;
       case 111:
-         Messenger.m(byteArr);
+         Messenger1.m(byteArr);
          return;
       case 112:
-         Messenger.i(byteArr);
+         Messenger1.i(byteArr);
          return;
       case 151:
-         Messenger.e(byteArr);
+         Messenger1.e(byteArr);
          return;
       case 152:
-         Messenger.f(byteArr);
+         Messenger1.f(byteArr);
          return;
       case 703:
          try {
-            BookUtil.b(byteArr);
+            Book.b(byteArr);
             return;
          } catch (Exception e) {
             e.printStackTrace();
@@ -144,7 +123,7 @@ public final class Core3 {
          Yapp.Log("BANNERS COME IN");
 
          try {
-            loadingBanner(byteArr);
+            d(byteArr);
          } catch (Exception e) {
             Yapp.Log("BANNER LOADING ERROR");
             e.printStackTrace();
@@ -152,10 +131,10 @@ public final class Core3 {
       }
    }
 
-   public static void parsingPostUiAction(byte[] byteArr) throws Exception {
-      ByteArrayInputStream bais = new ByteArrayInputStream(byteArr);
-      DataInputStream dis = new DataInputStream(bais);
-      switch(dis.readShort()) {
+   public static void parsing(byte[] var0) throws Exception {
+      ByteArrayInputStream var1 = new ByteArrayInputStream(var0);
+      DataInputStream var2 = new DataInputStream(var1);
+      switch(var2.readShort()) {
       case 1:
          c();
          return;
@@ -163,8 +142,8 @@ public final class Core3 {
          BrowserRender.renderAuthScreen(new byte[]{1, 0, 99, 0, 0, 0, 0}, "Yapp! ");
          return;
       case 98:
-         byte[] var10 = new byte[dis.readInt()];
-         dis.read(var10);
+         byte[] var10 = new byte[var2.readInt()];
+         var2.read(var10);
          b(var10);
          return;
       case 99:
@@ -177,15 +156,15 @@ public final class Core3 {
          b();
          return;
       case 160:
-         dis.readInt();
-         int var15 = dis.readInt();
-         Messenger.cmdListener2Arr[0].c(var15);
+         var2.readInt();
+         int var15 = var2.readInt();
+         Messenger1.a[0].c(var15);
          break;
       case 199:
-         if (StaticData.connectID > 0) {
-            if (Messenger.cmdListener2Arr[Messenger.b] == null) {
+         if (StaticData.b > 0) {
+            if (Messenger1.a[Messenger1.b] == null) {
                BrowserRender.readInForm();
-               Messenger2.renderIcqAuthScreen();
+               Messenger2.a();
             } else {
                StaticData.g = 1;
             }
@@ -199,45 +178,45 @@ public final class Core3 {
          ScreenCanvas.boolean2 = true;
          return;
       case 651:
-         dis.readInt(); // игнор инта
-         String str1 = dis.readUTF();
-         String str2 = dis.readUTF();
-         String str3 = dis.readUTF();
-         a(str3, str2, str1);
+         var2.readInt();
+         String var6 = var2.readUTF();
+         String var7 = var2.readUTF();
+         a(var2.readUTF(), var7, var6);
          return;
-      case 703: // отправка информации о размере рам памяти?
-         dis.readInt(); // игнор инта
+      case 703:
+         var2.readInt();
          BrowserForm.bool1 = true;
          BrowserForm.prepareRender = true;
-         int var11 = dis.readInt();
-         long totalMemory = Runtime.getRuntime().totalMemory();
-         BytesContentFactory bfc = new BytesContentFactory();
-         bfc.setType((short)703);
-         bfc.addInt(var11);
-         bfc.addLong(totalMemory);
-         SendPackets.addByteArrData(bfc.bytesArray());
+         int var11 = var2.readInt();
+         long var12 = Runtime.getRuntime().totalMemory();
+         BytesContentFactory var14;
+         (var14 = new BytesContentFactory()).setType((short)703);
+         var14.addInt(var11);
+         var14.addLong(var12);
+         SendPackets.addByteArrData(var14.bytesArray());
          return;
       case 1001:
-         dis.readInt();
-         String url = dis.readUTF();
-         if (url.length() > 0) {
-            a(url, dis.readByte());
+         var2.readInt();
+         String var5;
+         if ((var5 = var2.readUTF()).length() > 0) {
+            a(var5, var2.readByte());
          }
       }
+
    }
 
    private static void b() {
-      if (Messenger.b != -1 && Messenger.cmdListener2Arr[Messenger.b] != null) {
+      if (Messenger1.b != -1 && Messenger1.a[Messenger1.b] != null) {
          SelectableFormView gui3 = (SelectableFormView)BrowserForm.getUiElements()[1];
          byte var2 = 0;
 
-         for(byte i = 0; i < gui3.vars.length; ++i) {
-            if (gui3.text.equals(gui3.vars[i])) {
-               var2 = i;
+         for(byte var3 = 0; var3 < gui3.vars.length; ++var3) {
+            if (gui3.text.equals(gui3.vars[var3])) {
+               var2 = var3;
             }
          }
 
-         Messenger.c(var2);
+         Messenger1.c(var2);
       }
 
       BrowserForm.prepareRender = true;
@@ -247,37 +226,37 @@ public final class Core3 {
    }
 
    private static void c() {
-      if (Messenger.b != -1 && Messenger.cmdListener2Arr[Messenger.b] != null) {
+      if (Messenger1.b != -1 && Messenger1.a[Messenger1.b] != null) {
          ViewElement[] var0 = BrowserForm.getUiElements();
-         CommandListener2 cmdListener2 = Messenger.cmdListener2Arr[Messenger.b];
-         cmdListener2.l = ((CheckBox)var0[0]).isChecked;
-         if (cmdListener2.m != ((CheckBox)var0[1]).isChecked) {
-            cmdListener2.f();
+         CommandListener2 var1;
+         (var1 = Messenger1.a[Messenger1.b]).l = ((CheckBox)var0[0]).isChecked;
+         if (var1.m != ((CheckBox)var0[1]).isChecked) {
+            var1.f();
          }
 
-         if (cmdListener2.n != ((CheckBox)var0[2]).isChecked) {
-            cmdListener2.g();
+         if (var1.n != ((CheckBox)var0[2]).isChecked) {
+            var1.g();
          }
 
-         String var2 = cmdListener2.m();
+         String var2 = var1.m();
          byte[] var3 = new byte[]{1};
          byte[] var4 = new byte[]{0};
-         if (cmdListener2.m) {
-            BdUtil.save(var2 + "-sound", var3);
+         if (var1.m) {
+            DB.save(var2 + "-sound", var3);
          } else {
-            BdUtil.save(var2 + "-sound", var4);
+            DB.save(var2 + "-sound", var4);
          }
 
-         if (cmdListener2.l) {
-            BdUtil.save(var2 + "-vibro", var3);
+         if (var1.l) {
+            DB.save(var2 + "-vibro", var3);
          } else {
-            BdUtil.save(var2 + "-vibro", var4);
+            DB.save(var2 + "-vibro", var4);
          }
 
-         if (cmdListener2.n) {
-            BdUtil.save(var2 + "-hide", var3);
+         if (var1.n) {
+            DB.save(var2 + "-hide", var3);
          } else {
-            BdUtil.save(var2 + "-hide", var4);
+            DB.save(var2 + "-hide", var4);
          }
       }
 
@@ -289,75 +268,74 @@ public final class Core3 {
 
    private static void b(byte[] var0) throws IOException {
       BrowserForm.bool1 = true;
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      DataOutputStream dos = new DataOutputStream(baos);
-      ViewElement[] viewArrInBrowserForm = BrowserForm.getUiElements();
+      ByteArrayOutputStream var1 = new ByteArrayOutputStream();
+      DataOutputStream var2 = new DataOutputStream(var1);
+      ViewElement[] var3 = BrowserForm.getUiElements();
 
-      for(int i = 0; i < viewArrInBrowserForm.length; ++i) {
-         if (viewArrInBrowserForm[i].boolean1) {
-            if (viewArrInBrowserForm[i] instanceof EditText) {
-               dos.writeUTF(viewArrInBrowserForm[i].text);
-            } else if (viewArrInBrowserForm[i] instanceof SelectableFormView) {
-               dos.writeUTF(viewArrInBrowserForm[i].text);
-            } else if (viewArrInBrowserForm[i] instanceof CheckBox) {
-               if (((CheckBox)viewArrInBrowserForm[i]).isChecked) {
-                  dos.writeByte(1);
+      for(int var4 = 0; var4 < var3.length; ++var4) {
+         if (var3[var4].boolean1) {
+            if (var3[var4] instanceof EditText) {
+               var2.writeUTF(var3[var4].text);
+            } else if (var3[var4] instanceof SelectableFormView) {
+               var2.writeUTF(var3[var4].text);
+            } else if (var3[var4] instanceof CheckBox) {
+               if (((CheckBox)var3[var4]).isChecked) {
+                  var2.writeByte(1);
                } else {
-                  dos.writeByte(0);
+                  var2.writeByte(0);
                }
             }
          }
       }
 
-      dos.flush();
-      baos.flush();
-      byte[] byteArr = baos.toByteArray();
-      dos.close();
-      baos.close();
-      baos = new ByteArrayOutputStream();
-      dos = new DataOutputStream(baos);
-      dos.write(var0, 0, 2);
-      dos.writeInt(var0.length - 6 + byteArr.length);
-      dos.write(var0, 6, var0.length - 6);
-      dos.write(byteArr);
-      dos.flush();
-      baos.flush();
-      SendPackets.b(baos.toByteArray());
-      dos.close();
-      baos.close();
+      var2.flush();
+      var1.flush();
+      byte[] var5 = var1.toByteArray();
+      var2.close();
+      var1.close();
+      var1 = new ByteArrayOutputStream();
+      (var2 = new DataOutputStream(var1)).write(var0, 0, 2);
+      var2.writeInt(var0.length - 6 + var5.length);
+      var2.write(var0, 6, var0.length - 6);
+      var2.write(var5);
+      var2.flush();
+      var1.flush();
+      SendPackets.b(var1.toByteArray());
+      var2.close();
+      var1.close();
    }
 
    private static void a(String var0, String var1, String var2) throws Exception {
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      DataOutputStream dos = new DataOutputStream(baos);
-      dos.writeUTF(var2);
-      dos.writeInt(0);
-      dos.writeShort(2);
-      dos.writeShort(2);
-      dos.writeByte(0);
-      dos.writeByte(0);
-      dos.writeUTF(var1);
-      dos.writeByte(0);
-      dos.writeByte(0);
-      dos.writeShort(2);
-      dos.writeByte(1);
-      dos.writeByte(0);
-      dos.writeUTF(var0);
-      dos.writeByte(0);
-      dos.writeByte(0);
-      dos.writeShort(0);
-      dos.flush();
-      baos.flush();
-      byte[] var5 = baos.toByteArray();
+      ByteArrayOutputStream var3 = new ByteArrayOutputStream();
+      DataOutputStream var4;
+      (var4 = new DataOutputStream(var3)).writeUTF(var2);
+      var4.writeInt(0);
+      var4.writeShort(2);
+      var4.writeShort(2);
+      var4.writeByte(0);
+      var4.writeByte(0);
+      var4.writeUTF(var1);
+      var4.writeByte(0);
+      var4.writeByte(0);
+      var4.writeShort(2);
+      var4.writeByte(1);
+      var4.writeByte(0);
+      var4.writeUTF(var0);
+      var4.writeByte(0);
+      var4.writeByte(0);
+      var4.writeShort(0);
+      var4.flush();
+      var3.flush();
+      byte[] var5 = var3.toByteArray();
       vectorData.addElement(var5);
       vectorInt1.addElement(new Integer(BrowserForm.o));
       vectorInt2.addElement(new Integer(BrowserForm.p));
       BrowserRender.renderGUI(var5, false, -1, 0);
    }
 
-   private static void a(String url, byte var1) throws Exception {
-      Yapp.Log("URL->" + url);
-      boolean var2 = Yapp.yappMidlet.platformRequest(url);
+   private static void a(String var0, byte var1) throws Exception {
+      Yapp.Log("URL->" + var0);
+      boolean var2 = Yapp.yappMidlet.platformRequest(var0);
       System.out.println("needClose: " + var2);
       if (var2 || var1 == 1) {
          Yapp.yappMidlet.midletDestroy();
@@ -365,19 +343,19 @@ public final class Core3 {
 
    }
 
-   private static void c(byte[] byteArr) {
-      ByteArrayInputStream bais = new ByteArrayInputStream(byteArr);
-      DataInputStream dis = new DataInputStream(bais);
-      String str = "";
+   private static void c(byte[] var0) {
+      ByteArrayInputStream var1 = new ByteArrayInputStream(var0);
+      DataInputStream var2 = new DataInputStream(var1);
+      String var4 = "";
 
       try {
-         dis.readUTF();
-         str = dis.readUTF();
-      } catch (IOException e) {
-         e.printStackTrace();
+         var2.readUTF();
+         var4 = var2.readUTF();
+      } catch (IOException var7) {
+         var7.printStackTrace();
       }
 
-      if (str.equals("")) {
+      if (var4.equals("")) {
          vectorInt1.removeAllElements();
          vectorData.removeAllElements();
          vectorInt2.removeAllElements();
@@ -386,46 +364,46 @@ public final class Core3 {
          var5.addInt(StaticData.screenWidth);
          var5.addInt(StaticData.screenHeight);
          SendPackets.addByteArrData(var5.bytesArray());
-         Messenger.b((byte)0);
+         Messenger1.b((byte)0);
          BrowserForm.authMenuVariants = new String[]{"На весь экран", "Общайся", "Библиотека", "Помощь", "Выход"};
          BrowserForm.__messagerValue = 1;
          BrowserForm.__bookValue = 2;
          BrowserForm._helpValue = 3;
          BrowserForm._exitAppValue = 4;
       } else {
-         NetworkUtil.destroy();
-         ScreenCanvas.textDialog = str;
+         SocketConnector.disconnect();
+         ScreenCanvas.textDialog = var4;
          BrowserForm.bool1 = false;
          BrowserForm.prepareRender = true;
          ScreenCanvas.boolean2 = true;
       }
    }
 
-   private static void loadingBanner(byte[] byteArr) throws Exception {
-      Yapp.Log("LEN->" + byteArr.length);
-      ByteArrayInputStream var1 = new ByteArrayInputStream(byteArr);
-      DataInputStream var2 = new DataInputStream(var1);
-      short var3 = var2.readShort();
-      Gui4[] var4 = new Gui4[var3];
+   private static void d(byte[] var0) throws Exception {
+      Yapp.Log("LEN->" + var0.length);
+      ByteArrayInputStream var1 = new ByteArrayInputStream(var0);
+      DataInputStream var2;
+      short var3;
+      Gui4[] var4 = new Gui4[var3 = (var2 = new DataInputStream(var1)).readShort()];
 
-      for(int i = 0; i < var3; ++i) {
-         var4[i] = new Gui4();
-         var4[i].a = var2.readInt();
-         var4[i].d = var2.readByte();
-         BrowserRender.a((ViewElement)var4[i], (DataInputStream)var2);
+      for(int var5 = 0; var5 < var3; ++var5) {
+         var4[var5] = new Gui4();
+         var4[var5].a = var2.readInt();
+         var4[var5].d = var2.readByte();
+         BrowserRender.a((ViewElement)var4[var5], (DataInputStream)var2);
          byte[] var7 = new byte[var2.readInt()];
          var2.readFully(var7);
          ByteArrayInputStream var8;
          Image var9 = Image.createImage(var8 = new ByteArrayInputStream(var7));
          var8.close();
-         var4[i].image = var9;
-         var4[i].a();
+         var4[var5].image = var9;
+         var4[var5].a();
       }
 
       var1.close();
-      Core1.gElemArr = var4;
-      BytesContentFactory var10 = new BytesContentFactory();
-      var10.setType((short)801);
+      Core1.a = var4;
+      BytesContentFactory var10;
+      (var10 = new BytesContentFactory()).setType((short)801);
       var10.addByte((byte)0);
       SendPackets.addByteArrData(var10.bytesArray());
    }

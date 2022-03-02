@@ -116,8 +116,8 @@ public final class BrowserRender {
          
          dos.writeShort(4);
          dos.writeUTF("Введите здесь свой номер Yapp!");
-         if (BdUtil.read("yapp-login") != null) {
-            dos.writeUTF(new String(BdUtil.read("yapp-login")));
+         if (DB.read("yapp-login") != null) {
+            dos.writeUTF(new String(DB.read("yapp-login")));
          } else {
             dos.writeUTF("");
          }
@@ -136,8 +136,8 @@ public final class BrowserRender {
          
          dos.writeShort(4);
          dos.writeUTF("Введите здесь свой пароль");
-         if (BdUtil.read("yapp-password") != null) {
-            dos.writeUTF(new String(BdUtil.read("yapp-password")));
+         if (DB.read("yapp-password") != null) {
+            dos.writeUTF(new String(DB.read("yapp-password")));
          } else {
             dos.writeUTF("");
          }
@@ -148,7 +148,7 @@ public final class BrowserRender {
          dos.writeShort(6);
          dos.writeUTF("Запомнить");
          dos.writeUTF("");
-         if (BdUtil.read("yapp-login") != null) {
+         if (DB.read("yapp-login") != null) {
             dos.writeByte(1);
          } else {
             dos.writeByte(0);
@@ -192,7 +192,7 @@ public final class BrowserRender {
          Core3.vectorInt1.addElement(new Integer(BrowserForm.o));
          Core3.vectorInt2.addElement(new Integer(BrowserForm.p));
          byte focusPosition = 6;
-         if (BdUtil.read("yapp-login") != null) {
+         if (DB.read("yapp-login") != null) {
             focusPosition = 5;
          }
 
@@ -284,7 +284,7 @@ public final class BrowserRender {
             break;
          case 4:
             EditText editText = new EditText();
-            editText.hint = dis.readUTF();
+            editText.a = dis.readUTF();
             editText.text = dis.readUTF();
             dis.readUTF();
             if (dis.readByte() == 1) {
@@ -378,10 +378,10 @@ public final class BrowserRender {
                var32 = 2;
                break;
             case 1:
-               var32 = (StaticData.screenWidth - var34.img.getWidth()) / 2 - UiUtil.img4.getWidth();
+               var32 = (StaticData.screenWidth - var34.img.getWidth()) / 2 - ResUI.d.getWidth();
                break;
             case 2:
-               var32 = StaticData.screenWidth - 2 - UiUtil.img4.getWidth() - var34.img.getWidth();
+               var32 = StaticData.screenWidth - 2 - ResUI.d.getWidth() - var34.img.getWidth();
             }
          }
 
@@ -404,7 +404,7 @@ public final class BrowserRender {
             Core5.b();
             arrViews[i].k = var32;
             arrViews[i].l = arrViews[i - 1].l + arrViews[i - 1].imgH + 5;
-            arrViews[i].imgW = StaticData.screenWidth - 4 - UiUtil.img4.getWidth();
+            arrViews[i].imgW = StaticData.screenWidth - 4 - ResUI.d.getWidth();
             if (arrViews[i] instanceof Button) {
                ((Button)arrViews[i]).a();
             }
@@ -416,7 +416,7 @@ public final class BrowserRender {
          } else {
             arrViews[i].k = var32;
             arrViews[i].l = var10;
-            arrViews[i].imgW = StaticData.screenWidth - 4 - UiUtil.img4.getWidth();
+            arrViews[i].imgW = StaticData.screenWidth - 4 - ResUI.d.getWidth();
             if (arrViews[i] instanceof Button) {
                ((Button)arrViews[i]).a();
             }
@@ -448,7 +448,7 @@ public final class BrowserRender {
       BrowserForm.d = Core1.d();
       BrowserForm.a(arrViews);
       BrowserForm.q = arrViews[arrViews.length - 1].l + arrViews[arrViews.length - 1].imgH + 5;
-      BrowserForm.bgColor = 0xFFFFFF;
+      BrowserForm.bgColor = 16777215;
       BrowserForm.o = -1;
       if (BrowserForm.d > 0) {
          BrowserForm.bool3 = true;

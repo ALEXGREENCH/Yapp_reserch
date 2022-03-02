@@ -5,53 +5,53 @@ import javax.microedition.lcdui.Image;
 import ru.yapp.mobile.gui.Gui4;
 
 public final class Core1 {
-   public static Gui4[] gElemArr = null;
-   private static Gui4 gElem = null;
+   public static Gui4[] a = null;
+   private static Gui4 b = null;
 
    public static Image a() {
-      return gElem != null ? gElem.image : null;
+      return b != null ? b.image : null;
    }
 
    public static int b() {
-      return gElem != null ? gElem.a : 0;
+      return b != null ? b.a : 0;
    }
 
    public static void a(int var0) {
-      if (gElemArr != null) {
+      if (a != null) {
          if (var0 != 0) {
-            gElem = null;
+            b = null;
 
-            for(int i = 0; i < gElemArr.length; ++i) {
-               if (gElemArr[i].a == var0) {
-                  gElem = gElemArr[i];
+            for(int var1 = 0; var1 < a.length; ++var1) {
+               if (a[var1].a == var0) {
+                  b = a[var1];
                }
             }
 
             return;
          }
 
-         int l = (new Random()).nextInt() % 100;
-         int counter = 0;
+         int var2 = (new Random()).nextInt() % 100;
+         int var3 = 0;
 
-         for(int i = 0; i < gElemArr.length && l < counter; ++i) {
-            counter += gElemArr[i].d;
-            if (l < counter) {
-               gElem = gElemArr[i];
+         for(int var4 = 0; var4 < a.length && var2 < var3; ++var4) {
+            var3 += a[var4].d;
+            if (var2 < var3) {
+               b = a[var4];
             }
          }
 
-         if (gElem == null) {
-            gElem = gElemArr[0];
+         if (b == null) {
+            b = a[0];
          }
       }
 
    }
 
    public static void c() {
-      gElem = null;
+      b = null;
    }
 
    public static int d() {
-      return gElem != null ? gElem.b : 0;
+      return b != null ? b.b : 0;
    }
 }

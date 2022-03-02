@@ -25,7 +25,7 @@ public final class NetworkUtil {
             try {
                 socketConnection = (SocketConnection) Connector.open("socket://87.242.76.88:6666", 3);
                 ReceivePackets.addDIS(socketConnection.openDataInputStream());
-                SendPackets.addDIS(socketConnection.openDataOutputStream());
+                SendPackets.addDOS(socketConnection.openDataOutputStream());
                 Messenger.a();
                 ReceivePackets.socketStoped = false;
                 Core3.a = 0;

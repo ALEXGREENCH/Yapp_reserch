@@ -13,7 +13,7 @@ public final class SendPackets implements Runnable {
 
     private static boolean isRunning = false;
     private static DataOutputStream dataOutputStream;
-    private static Vector vectorData = new Vector();
+    private static final Vector vectorData = new Vector();
 
     public SendPackets() {
         vectorData.removeAllElements();
@@ -21,7 +21,7 @@ public final class SendPackets implements Runnable {
         (new Thread(this)).start();
     }
 
-    public static void addDIS(DataOutputStream dos) {
+    public static void addDOS(DataOutputStream dos) {
         if (dataOutputStream != null) {
             try {
                 dataOutputStream.close();
@@ -32,7 +32,7 @@ public final class SendPackets implements Runnable {
         dataOutputStream = dos;
     }
 
-    private static void b() {
+    private static void send() {
         if (vectorData.size() > 0) {
             byte[] byteArr = (byte[]) ((byte[]) vectorData.elementAt(0));
 
@@ -53,13 +53,13 @@ public final class SendPackets implements Runnable {
 
     }
 
-    public static void addByteArrData(byte[] data) {
-        vectorData.addElement(data);
+    public static void addByteArrData(byte[] bites) {
+        vectorData.addElement(bites);
     }
 
-    public static void b(byte[] var0) {
+    public static void send(byte[] bites) {
         if (!NetworkUtil.isRunning) {
-            ReceivePackets.a = true;
+            ReceivePackets.reconnectFlag = true;
         }
 
         ByteArrayOutputStream bas = new ByteArrayOutputStream();
@@ -67,8 +67,8 @@ public final class SendPackets implements Runnable {
 
         try {
             dos.writeInt(StaticData.connectID);
-            dos.writeUTF(StaticData.a);
-            dos.write(var0);
+            dos.writeUTF(StaticData.connectString);
+            dos.write(bites);
             dos.flush();
             bas.flush();
         } catch (IOException ioe) {
@@ -91,11 +91,14 @@ public final class SendPackets implements Runnable {
     }
 
     public final void run() {
+        // проверка каждую секунду наличия данных для отправки
+        // и собственно сама отпрака
         while (isRunning) {
             if (dataOutputStream != null) {
-                b();
+                send();
             }
             try {
+                //noinspection BusyWait
                 Thread.sleep(1000L);
             } catch (InterruptedException ie) {
                 ie.printStackTrace();

@@ -721,7 +721,7 @@ public final class BrowserForm {
                 }
 
                 if (viewElement.byteArr2 != null) {
-                    SendPackets.b(viewElement.byteArr2);
+                    SendPackets.send(viewElement.byteArr2);
                     bool1 = true;
                     prepareRender = true;
                 }
@@ -748,14 +748,14 @@ public final class BrowserForm {
         }
 
         if (uiElementArr[3].text != null) {
-            StaticData.a = uiElementArr[3].text;
+            StaticData.connectString = uiElementArr[3].text;
         } else {
-            StaticData.a = "";
+            StaticData.connectString = "";
         }
 
         if (((CheckBox) getUiElements()[4]).isChecked) {
             BdUtil.save("yapp-login", Integer.toString(StaticData.connectID).getBytes());
-            BdUtil.save("yapp-password", StaticData.a.getBytes());
+            BdUtil.save("yapp-password", StaticData.connectString.getBytes());
         } else {
             BdUtil.save("yapp-login", "".getBytes());
             BdUtil.save("yapp-password", "".getBytes());
@@ -767,7 +767,7 @@ public final class BrowserForm {
         bcf.addUtfString("1.7"); // версия приложения
         SendPackets.addByteArrData(bcf.bytesArray());
         if (!NetworkUtil.isRunning) {
-            ReceivePackets.a = true;
+            ReceivePackets.reconnectFlag = true;
         }
 
         a = "";

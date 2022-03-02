@@ -2,7 +2,7 @@ package ru.yapp.mobile.core;
 
 public final class StaticData {
     public static final String[] messagerType = new String[]{"Yapp!", "ICQ"};
-    public static String a = "";
+    public static String connectString = "";
     public static int connectID = 0; // tmp
     public static int screenWidth = 128;
     public static int screenHeight = 0;

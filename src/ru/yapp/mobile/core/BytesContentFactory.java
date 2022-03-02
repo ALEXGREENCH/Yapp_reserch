@@ -55,7 +55,7 @@ public final class BytesContentFactory {
 
         try {
             dos.writeInt(StaticData.connectID);
-            dos.writeUTF(StaticData.a);
+            dos.writeUTF(StaticData.connectString);
             dos.writeShort(this.type);
             dos.writeInt(bitesFromBAOS.length);
             dos.write(bitesFromBAOS);

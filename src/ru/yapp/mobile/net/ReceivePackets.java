@@ -10,7 +10,8 @@ import ru.yapp.mobile.browser.BrowserForm;
 import ru.yapp.mobile.core.Core3;
 
 public final class ReceivePackets implements Runnable {
-    public static boolean a = false;
+
+    public static boolean reconnectFlag = false;
     public static boolean socketStoped = false;
     private static boolean initObject = false;
     private static DataInputStream dataInputStream;
@@ -41,7 +42,6 @@ public final class ReceivePackets implements Runnable {
             byte[] byteArr;
             int allReceiveKbData = var1 / 1024;
             int downloadKbData = 0;
-            ;
             int readBookData;
             int var10;
             if (commandByShort == 66) {
@@ -54,10 +54,6 @@ public final class ReceivePackets implements Runnable {
                     BrowserForm.a = "0/" + allReceiveKbData + "кб";
                     BrowserForm.prepareRender = true;
                 }
-
-
-                boolean var9 = false;
-
                 while (downloadKbData < var1) {
                     var10 = 1024;
                     if (var1 - downloadKbData < 1024) {
@@ -138,9 +134,9 @@ public final class ReceivePackets implements Runnable {
 
     public final void run() {
         while (initObject) {
-            if (a && dataInputStream == null) {
+            if (reconnectFlag && dataInputStream == null) {
                 NetworkUtil.connect();
-                a = false;
+                reconnectFlag = false;
             }
 
             if (dataInputStream != null) {

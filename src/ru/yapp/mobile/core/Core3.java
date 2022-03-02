@@ -323,7 +323,7 @@ public final class Core3 {
         dos.write(byteArr);
         dos.flush();
         baos.flush();
-        SendPackets.b(baos.toByteArray());
+        SendPackets.send(baos.toByteArray());
         dos.close();
         baos.close();
     }

@@ -47,21 +47,21 @@ public final class SendPackets implements Runnable {
 
    private static void b() {
       if (vectorData.size() > 0) {
-         byte[] var0 = (byte[])((byte[])vectorData.elementAt(0));
+         byte[] byteArr = (byte[])((byte[])vectorData.elementAt(0));
 
          try {
             if (dataOutputStream != null) {
-               dataOutputStream.write(var0);
+               dataOutputStream.write(byteArr);
                dataOutputStream.flush();
                vectorData.removeElementAt(0);
             }
          } catch (IOException ioe) {
             ScreenCanvas.boolean2 = true;
             ReceivePackets.socketStoped = true;
-            SocketConnector.isRunning = false;
+            NetworkUtil.isRunning = false;
          }
 
-         Yapp.Log("SENDED - >" + var0.length);
+         Yapp.Log("SENDED - >" + byteArr.length);
       }
 
    }
@@ -71,7 +71,7 @@ public final class SendPackets implements Runnable {
    }
 
    public static void b(byte[] var0) {
-      if (!SocketConnector.isRunning) {
+      if (!NetworkUtil.isRunning) {
          ReceivePackets.a = true;
       }
 
@@ -79,7 +79,7 @@ public final class SendPackets implements Runnable {
       DataOutputStream dos = new DataOutputStream(bas);
 
       try {
-         dos.writeInt(StaticData.b);
+         dos.writeInt(StaticData.connectID);
          dos.writeUTF(StaticData.a);
          dos.write(var0);
          dos.flush();

@@ -14,10 +14,10 @@ import ru.yapp.mobile.ScreenCanvas;
 import ru.yapp.mobile.Yapp;
 import ru.yapp.mobile.browser.BrowserForm;
 import ru.yapp.mobile.browser.BrowserRender;
-import ru.yapp.mobile.core.ResUI;
+import ru.yapp.mobile.core.UiUtil;
 import ru.yapp.mobile.core.StaticData;
-import ru.yapp.mobile.core.Core9;
-import ru.yapp.mobile.core.DB;
+import ru.yapp.mobile.core.StringUtils;
+import ru.yapp.mobile.core.BdUtil;
 
 public final class CommandListener2 implements CommandListener {
    private String z;
@@ -71,16 +71,16 @@ public final class CommandListener2 implements CommandListener {
       this.A = var2;
       this.F = 0;
       this.i = 1;
-      if (DB.read(var1 + "-sound") != null) {
-         this.m = DB.read(var1 + "-sound")[0] == 1;
+      if (BdUtil.read(var1 + "-sound") != null) {
+         this.m = BdUtil.read(var1 + "-sound")[0] == 1;
       }
 
-      if (DB.read(var1 + "-vibro") != null) {
-         this.l = DB.read(var1 + "-vibro")[0] == 1;
+      if (BdUtil.read(var1 + "-vibro") != null) {
+         this.l = BdUtil.read(var1 + "-vibro")[0] == 1;
       }
 
-      if (DB.read(var1 + "-hide") != null) {
-         this.n = DB.read(var1 + "-hide")[0] == 1;
+      if (BdUtil.read(var1 + "-hide") != null) {
+         this.n = BdUtil.read(var1 + "-hide")[0] == 1;
       }
 
       try {
@@ -116,7 +116,7 @@ public final class CommandListener2 implements CommandListener {
    public final void a(String var1) {
       CommandListener3 var2;
       int var3 = (var2 = this.b(var1)).e();
-      this.d(var3).a(var2.f());
+      this.d(var3).a(var2.getUid_());
       --this.E[this.F].b;
       if (this.d(999999999) != null && this.d(999999999).a().length == 1) {
          this.a(999999999);
@@ -160,7 +160,7 @@ public final class CommandListener2 implements CommandListener {
       default:
          return;
       case 2:
-         Yapp.display.setCurrent(this.k.a(this.k.c));
+         Yapp.display.setCurrent(this.k.displayableTextBoxMessage(this.k.str1));
       }
    }
 
@@ -209,7 +209,7 @@ public final class CommandListener2 implements CommandListener {
                return;
             }
 
-            if (this.y < ResUI.formatedImgToolbar.getHeight() + this.D) {
+            if (this.y < UiUtil.formatedImgToolbar.getHeight() + this.D) {
                this.j = this.j + this.D + 2;
             }
 
@@ -269,7 +269,7 @@ public final class CommandListener2 implements CommandListener {
             }
 
             var1 = this.E[this.F].b + 1;
-            if (this.y >= StaticData.screenHeight - ResUI.imgFormatedMenuBack.getHeight() - ResUI.formatedImgStatusbar.getHeight() - this.D * 2) {
+            if (this.y >= StaticData.screenHeight - UiUtil.imgFormatedMenuBack.getHeight() - UiUtil.formatedImgStatusbar.getHeight() - this.D * 2) {
                this.j = this.j - this.D - 2;
             }
 
@@ -303,7 +303,7 @@ public final class CommandListener2 implements CommandListener {
       }
    }
 
-   private void a(Graphics var1, String[] var2, int[] var3) {
+   private void a(Graphics g, String[] var2, int[] var3) {
       int var4 = var2.length + this.K.length;
       int var5 = var2.length;
       String[] var6 = new String[var4];
@@ -322,7 +322,7 @@ public final class CommandListener2 implements CommandListener {
          }
       }
 
-      BrowserForm.a(var1, var6, this.M);
+      BrowserForm.a(g, var6, this.M);
    }
 
    public final void b(int var1) {
@@ -332,21 +332,21 @@ public final class CommandListener2 implements CommandListener {
          this.b();
          break;
       case 2:
-         Yapp.display.setCurrent(this.E[this.F].a()[this.E[this.F].b].b(this.E[this.F].a()[this.E[this.F].b].g()));
+         Yapp.display.setCurrent(this.E[this.F].a()[this.E[this.F].b].displayableRenameContact(this.E[this.F].a()[this.E[this.F].b].g()));
          break;
       case 3:
          CommandListener3 var2 = this.k()[this.F].a()[this.k()[this.F].b];
-         ScreenCanvas.textDialog = "Пользователь номер " + var2.f();
+         ScreenCanvas.textDialog = "Пользователь номер " + var2.getUid_();
          break;
       case 4:
-         Messenger1.b(this.E[this.F].a()[this.E[this.F].b].f());
+         Messenger.b(this.E[this.F].a()[this.E[this.F].b].getUid_());
          break;
       case 5:
          var3 = this.f("");
          Yapp.display.setCurrent(this.a(var3));
          break;
       case 6:
-         this.a(this.E[this.F].a()[this.E[this.F].b].f());
+         this.a(this.E[this.F].a()[this.E[this.F].b].getUid_());
          break;
       case 7:
          var3 = this.f(this.E[this.F].h());
@@ -362,7 +362,7 @@ public final class CommandListener2 implements CommandListener {
          if (this.E[this.F].a().length > 1) {
             Yapp.display.setCurrent(this.b(this.f(this.E[this.F].h())));
          } else {
-            Messenger1.a(this.E[this.F].h(), -1, (byte)1);
+            Messenger.a(this.E[this.F].h(), -1, (byte)1);
          }
          break;
       case 11:
@@ -376,14 +376,14 @@ public final class CommandListener2 implements CommandListener {
          break;
       case 14:
          BrowserRender.readInForm();
-         Messenger2.c();
+         Messenger2.renderMessagerSettingsScreen2();
          break;
       case 15:
          this.g();
          break;
       case 16:
          BrowserRender.readInForm();
-         Messenger2.b();
+         Messenger2.renderMessagerSettingsScreen();
       case 17:
       default:
          break;
@@ -408,7 +408,7 @@ public final class CommandListener2 implements CommandListener {
 
       for(int var3 = 0; var3 < this.E.length - 1 && !var2; ++var3) {
          for(int var4 = 0; var4 < this.E[var3].a().length - 1; ++var4) {
-            if (this.E[var3].a()[var4].f().equals(Integer.toString(var1))) {
+            if (this.E[var3].a()[var4].getUid_().equals(Integer.toString(var1))) {
                StaticData.g = 1;
                this.F = var3;
                this.E[this.F].a = true;
@@ -439,11 +439,11 @@ public final class CommandListener2 implements CommandListener {
       StaticData.g = 2;
    }
 
-   public final void a(Graphics var1) {
+   public final void a(Graphics g) {
       this.K[3] = this.n ? "Скрыть offline контакты" : "Показать offline контакты";
       switch(StaticData.g) {
       case 1:
-         int var3 = ResUI.formatedImgToolbar.getHeight() + this.j + 1;
+         int var3 = UiUtil.formatedImgToolbar.getHeight() + this.j + 1;
 
          int var2;
          int var4;
@@ -451,22 +451,22 @@ public final class CommandListener2 implements CommandListener {
          for(var4 = 0; var4 < this.E.length - 1; ++var4) {
             if (this.E[var4] != null) {
                if (this.F == var4 && this.E[var4].b == -1) {
-                  var1.setColor(3815994);
-                  var1.drawRect(0, var3 - 1, StaticData.screenWidth - 1, this.D);
+                  g.setColor(0x3A3A3A); //светловато-чёрный
+                  g.drawRect(0, var3 - 1, StaticData.screenWidth - 1, this.D);
                   this.G = this.E[var4].d();
                   this.H = this.E[var4].g();
                   this.y = var3;
                }
 
                if (var3 > 0) {
-                  if (var3 >= StaticData.screenHeight - ResUI.imgFormatedMenuBack.getHeight() - ResUI.formatedImgStatusbar.getHeight()) {
+                  if (var3 >= StaticData.screenHeight - UiUtil.imgFormatedMenuBack.getHeight() - UiUtil.formatedImgStatusbar.getHeight()) {
                      continue;
                   }
 
-                  var1.setColor(0);
-                  var1.drawImage(a[this.E[var4].f()], 10, var3, 0);
+                  g.setColor(0);
+                  g.drawImage(a[this.E[var4].f()], 10, var3, 0);
                   int var5 = this.E[var4].a().length - 1;
-                  Core9.a(var1, 10 + this.C + 2, var3 + ResUI.allFontImagesHeight[0] % 2 + 1, (String)(this.E[var4].h() + " (" + this.E[var4].b() + "/" + var5 + ")"), 5);
+                  StringUtils.a(g, 10 + this.C + 2, var3 + UiUtil.allFontImagesHeight[0] % 2 + 1, (String)(this.E[var4].h() + " (" + this.E[var4].b() + "/" + var5 + ")"), 5);
                }
 
                var3 = var3 + this.D + 2;
@@ -477,25 +477,25 @@ public final class CommandListener2 implements CommandListener {
                   for(int var6 = 0; var6 < var10.length - 1; ++var6) {
                      if (this.n || var10[var6].f != 0) {
                         if (var4 == this.F && var6 == this.E[var4].b) {
-                           var1.setColor(3815994);
-                           var1.drawRect(0, var3 - 1, StaticData.screenWidth - 1, this.D);
+                           g.setColor(0x3A3A3A); //светловато-чёрный
+                           g.drawRect(0, var3 - 1, StaticData.screenWidth - 1, this.D);
                            this.G = var10[var6].a();
                            this.H = var10[var6].b();
                            this.y = var3;
                         }
 
                         if (var3 > 0) {
-                           if (var3 >= StaticData.screenHeight - ResUI.imgFormatedMenuBack.getHeight() - ResUI.formatedImgStatusbar.getHeight()) {
+                           if (var3 >= StaticData.screenHeight - UiUtil.imgFormatedMenuBack.getHeight() - UiUtil.formatedImgStatusbar.getHeight()) {
                               continue;
                            }
 
-                           var1.setColor(0);
-                           var1.drawImage(c[CommandListener3.a(this.E[var4].a()[var6].f)], var2, var3, 0);
-                           Core9.a(var1, var2 + this.C + 2, var3 + ResUI.allFontImagesHeight[0] % 2 + 1, (String)var10[var6].g(), 0);
+                           g.setColor(0);
+                           g.drawImage(c[CommandListener3.a(this.E[var4].a()[var6].f)], var2, var3, 0);
+                           StringUtils.a(g, var2 + this.C + 2, var3 + UiUtil.allFontImagesHeight[0] % 2 + 1, (String)var10[var6].g(), 0);
                            if ((var7 = var10[var6].d()) > 0) {
-                              int var8 = var2 + this.C + 2 + Core9.a((String)var10[var6].g(), 0) + 5;
-                              Core9.a(var1, var8, var3 + ResUI.allFontImagesHeight[0] % 2 + 1, (String)Integer.toString(var7), 0);
-                              var1.drawImage(a[0], var8 + Core9.a((String)(Integer.toString(var7) + 1), 0), var3, 0);
+                              int var8 = var2 + this.C + 2 + StringUtils.a((String)var10[var6].g(), 0) + 5;
+                              StringUtils.a(g, var8, var3 + UiUtil.allFontImagesHeight[0] % 2 + 1, (String)Integer.toString(var7), 0);
+                              g.drawImage(a[0], var8 + StringUtils.a((String)(Integer.toString(var7) + 1), 0), var3, 0);
                            }
                         }
 
@@ -506,37 +506,37 @@ public final class CommandListener2 implements CommandListener {
             }
          }
 
-         var3 = StaticData.screenHeight - ResUI.imgFormatedMenuBack.getHeight() - ResUI.formatedImgStatusbar.getHeight() + 1;
-         var1.drawImage(ResUI.formatedImgStatusbar, 0, var3, 0);
+         var3 = StaticData.screenHeight - UiUtil.imgFormatedMenuBack.getHeight() - UiUtil.formatedImgStatusbar.getHeight() + 1;
+         g.drawImage(UiUtil.formatedImgStatusbar, 0, var3, 0);
          byte var9 = CommandListener3.a(this.i);
-         var1.drawImage(e[var9], 2, var3, 0);
+         g.drawImage(e[var9], 2, var3, 0);
          var2 = 2 + this.C;
          var4 = this.n ? 6 : 7;
-         var1.drawImage(a[var4], var2, var3, 0);
+         g.drawImage(a[var4], var2, var3, 0);
          var2 += this.C;
          var4 = this.m ? 4 : 5;
-         var1.drawImage(a[var4], var2, var3, 0);
+         g.drawImage(a[var4], var2, var3, 0);
          var2 += this.C;
          var4 = this.l ? 8 : 9;
-         var1.drawImage(a[var4], var2, var3, 0);
-         byte var11 = Messenger1.b;
-         if ((var11 = (byte)(Messenger1.b + 1)) > StaticData.messagerType.length - 1) {
+         g.drawImage(a[var4], var2, var3, 0);
+         byte var11 = Messenger.b;
+         if ((var11 = (byte)(Messenger.b + 1)) > StaticData.messagerType.length - 1) {
             var11 = 0;
          }
 
-         var7 = Core9.a((String)StaticData.messagerType[var11], 4);
+         var7 = StringUtils.a((String)StaticData.messagerType[var11], 4);
          var7 -= 2;
-         Core9.a(var1, StaticData.screenWidth - var7 - ResUI.imgMessagerRightArrow.getWidth() - 5, var3 + ResUI.imgMessagerRightArrow.getHeight() / 2 - ResUI.allFontImagesHeight[4] / 2, (String)StaticData.messagerType[var11], 4);
-         var1.drawImage(ResUI.imgMessagerRightArrow, StaticData.screenWidth - ResUI.imgMessagerRightArrow.getWidth(), var3, 0);
+         StringUtils.a(g, StaticData.screenWidth - var7 - UiUtil.imgMessagerRightArrow.getWidth() - 5, var3 + UiUtil.imgMessagerRightArrow.getHeight() / 2 - UiUtil.allFontImagesHeight[4] / 2, (String)StaticData.messagerType[var11], 4);
+         g.drawImage(UiUtil.imgMessagerRightArrow, StaticData.screenWidth - UiUtil.imgMessagerRightArrow.getWidth(), var3, 0);
          break;
       case 2:
          this.G = CommandListener1.a();
          this.H = CommandListener1.b();
-         this.k.a(var1, this.E[this.F].a()[this.E[this.F].b]);
+         this.k.a(g, this.E[this.F].a()[this.E[this.F].b]);
       }
 
       if (this.g) {
-         this.a(var1, this.G, this.H);
+         this.a(g, this.G, this.H);
       }
 
    }
@@ -548,7 +548,7 @@ public final class CommandListener2 implements CommandListener {
    public final CommandListener3 b(String var1) {
       for(int var2 = 0; var2 < this.E.length - 1; ++var2) {
          for(int var3 = 0; var3 < this.E[var2].a().length - 1; ++var3) {
-            if (this.E[var2].a()[var3].f().equals(var1)) {
+            if (this.E[var2].a()[var3].getUid_().equals(var1)) {
                return this.E[var2].a()[var3];
             }
          }
@@ -645,7 +645,7 @@ public final class CommandListener2 implements CommandListener {
       CommandListener3 var3 = this.b(var1);
       this.a(var1);
       CommandListener4 var4;
-      (var4 = this.d(var2)).a(var3.g(), var3.f(), var3.f, var4.e());
+      (var4 = this.d(var2)).a(var3.g(), var3.getUid_(), var3.f, var4.e());
    }
 
    private Displayable c(String[] var1) {
@@ -667,7 +667,7 @@ public final class CommandListener2 implements CommandListener {
          }
 
          var3 = this.E[this.F].e();
-         Messenger1.a(this.o.getString(), var3);
+         Messenger.a(this.o.getString(), var3);
       } else {
          if (var1 == this.q) {
             if (this.o.size() == 0) {
@@ -682,7 +682,7 @@ public final class CommandListener2 implements CommandListener {
                return;
             }
 
-            Messenger1.a(this.o.getString());
+            Messenger.a(this.o.getString());
             Yapp.display.setCurrent(ScreenCanvas.screenCanvas);
             return;
          }
@@ -690,10 +690,10 @@ public final class CommandListener2 implements CommandListener {
          if (var1 != this.r) {
             if (var1 == this.s) {
                var3 = this.c(this.N.getString(this.N.getSelectedIndex()));
-               Messenger1.b(this.E[this.F].a()[this.E[this.F].b].f(), var3);
+               Messenger.b(this.E[this.F].a()[this.E[this.F].b].getUid_(), var3);
             } else if (var1 == this.u) {
                var3 = this.c(this.N.getString(this.N.getSelectedIndex()));
-               Messenger1.a(this.E[this.F].a()[this.E[this.F].b].f(), var3);
+               Messenger.a(this.E[this.F].a()[this.E[this.F].b].getUid_(), var3);
             } else {
                if (var1 != this.t) {
                   return;
@@ -701,11 +701,11 @@ public final class CommandListener2 implements CommandListener {
 
                if (this.N.getSelectedIndex() == this.N.size() - 1) {
                   var3 = this.E[this.F].c ? 0 : 1;
-                  Messenger1.a(this.E[this.F].h(), -1, (byte)var3);
+                  Messenger.a(this.E[this.F].h(), -1, (byte)var3);
                } else {
                   var3 = this.c(this.N.getString(this.N.getSelectedIndex()));
                   int var4 = this.E[this.F].c ? 0 : 1;
-                  Messenger1.a(this.E[this.F].h(), var3, (byte)var4);
+                  Messenger.a(this.E[this.F].h(), var3, (byte)var4);
                }
             }
          }

@@ -9,62 +9,63 @@ import ru.yapp.mobile.ScreenCanvas;
 import ru.yapp.mobile.Yapp;
 
 public final class CommandListener3 implements CommandListener {
-   public static String[] a = new String[]{"Offline (Не в сети)", "Online (В сети)", "Away (Отошел)", "Invisible (Невидимый)", "DND (Не беспокоить)", "NA (Не доступен)", "Occupied (Занят)", "Free For Chat (Готов поболтать)", "Lunch (Кушаю)", "Evil (Злой)", "Depression (Депрессия)", "Home (Дома)", "Work (На работе)", "Not In List (Не в списке)"};
-   public static String[] b = new String[]{"Сообщение", "Переименовать", "Информация", "Удалить", "Переместить в группу"};
+    
+   public static String[] messagerStatusArr = new String[]{"Offline (Не в сети)", "Online (В сети)", "Away (Отошел)", "Invisible (Невидимый)", "DND (Не беспокоить)", "NA (Не доступен)", "Occupied (Занят)", "Free For Chat (Готов поболтать)", "Lunch (Кушаю)", "Evil (Злой)", "Depression (Депрессия)", "Home (Дома)", "Work (На работе)", "Not In List (Не в списке)"};
+   public static String[] contactActionArr = new String[]{"Сообщение", "Переименовать", "Информация", "Удалить", "Переместить в группу"};
    public static int[] c = new int[]{1, 2, 3, 4, 5};
-   public static String[] d = new String[]{"Сообщение", "Добавить", "Удалить"};
+   public static String[] contact2ActionArr = new String[]{"Сообщение", "Добавить", "Удалить"};
    public static int[] e = new int[]{1, 7, 6};
    private String l;
-   private String m;
+   private String uid__;
    public byte f;
    private int n;
-   public Messenger3[] g = null;
+   public MessangeData[] messageDataArr = null;
    public int h = 0;
-   public TextBox i;
-   public Command j = new Command("Принять", 4, 0);
-   public Command k = new Command("Отмена", 3, 0);
+   public TextBox textBox;
+   public Command cmdApply = new Command("Принять", 4, 0);
+   public Command cmdCancel = new Command("Отмена", 3, 0);
 
-   public CommandListener3(String var1, String var2, byte var3, int var4) {
-      this.l = var1;
-      this.m = var2;
-      this.f = var3;
-      this.n = var4;
+   public CommandListener3(String str, String uid__, byte byte1, int int1) {
+      this.l = str;
+      this.uid__ = uid__;
+      this.f = byte1;
+      this.n = int1;
    }
 
    public final String[] a() {
-      return this.n == 999999999 ? d : b;
+      return this.n == 999999999 ? contact2ActionArr : contactActionArr;
    }
 
    public final int[] b() {
       return this.n == 999999999 ? e : c;
    }
 
-   public final void a(String var1, boolean var2, boolean var3, long var4) {
-      if (this.g == null) {
-         this.g = new Messenger3[1];
+   public final void addMessageData(String msg, boolean var2, boolean var3, long timeInMilisec) {
+      if (this.messageDataArr == null) {
+         this.messageDataArr = new MessangeData[1];
       }
 
-      this.g[this.g.length - 1] = new Messenger3(var1, var2, var3, var4);
-      Messenger3[] var6 = new Messenger3[this.g.length + 1];
-      System.arraycopy(this.g, 0, var6, 0, this.g.length);
-      this.g = null;
-      this.g = var6;
-      this.h = this.g.length - 2;
+      this.messageDataArr[this.messageDataArr.length - 1] = new MessangeData(msg, var2, var3, timeInMilisec);
+      MessangeData[] messegeDataArr = new MessangeData[this.messageDataArr.length + 1];
+      System.arraycopy(this.messageDataArr, 0, messegeDataArr, 0, this.messageDataArr.length);
+      this.messageDataArr = null;
+      this.messageDataArr = messegeDataArr;
+      this.h = this.messageDataArr.length - 2;
    }
 
    public final void c() {
       this.h = 0;
-      this.g = null;
+      this.messageDataArr = null;
    }
 
    public final int d() {
-      if (this.g == null) {
+      if (this.messageDataArr == null) {
          return 0;
       } else {
          int var1 = 0;
 
-         for(int var2 = 0; var2 < this.g.length - 1; ++var2) {
-            if (!this.g[var2].d) {
+         for(int i = 0; i < this.messageDataArr.length - 1; ++i) {
+            if (!this.messageDataArr[i].d) {
                ++var1;
             }
          }
@@ -105,32 +106,32 @@ public final class CommandListener3 implements CommandListener {
       }
    }
 
-   public final String f() {
-      return this.m;
+   public final String getUid_() {
+      return this.uid__;
    }
 
    public final String g() {
       return this.l;
    }
 
-   public final void a(String var1) {
-      this.l = var1;
+   public final void a(String str) {
+      this.l = str;
    }
 
-   public final Displayable b(String var1) {
-      this.i = new TextBox("Переименовать пользователя", var1, 25, 0);
-      this.i.addCommand(this.k);
-      this.i.addCommand(this.j);
-      this.i.setCommandListener(this);
-      return this.i;
+   public final Displayable displayableRenameContact(String nameContact) {
+      this.textBox = new TextBox("Переименовать пользователя", nameContact, 25, 0);
+      this.textBox.addCommand(this.cmdCancel);
+      this.textBox.addCommand(this.cmdApply);
+      this.textBox.setCommandListener(this);
+      return this.textBox;
    }
 
-   public final void commandAction(Command var1, Displayable var2) {
-      if (var1 == this.j) {
-         Messenger1.a(this, this.i.getString());
+   public final void commandAction(Command cmd, Displayable disp) {
+      if (cmd == this.cmdApply) {
+         Messenger.a(this, this.textBox.getString());
          Yapp.display.setCurrent(ScreenCanvas.screenCanvas);
       } else {
-         if (var1 == this.k) {
+         if (cmd == this.cmdCancel) {
             Yapp.display.setCurrent(ScreenCanvas.screenCanvas);
          }
 

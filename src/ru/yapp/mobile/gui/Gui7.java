@@ -1,11 +1,12 @@
 package ru.yapp.mobile.gui;
 
-import ru.yapp.mobile.core.Core9;
-import ru.yapp.mobile.core.ResUI;
+import ru.yapp.mobile.core.StringUtils;
+import ru.yapp.mobile.core.UiUtil;
 
 import javax.microedition.lcdui.Graphics;
 
 public final class Gui7 extends ViewElement {
+    
    private int c = 0;
    private int d = 4;
    public String str1 = "";
@@ -21,7 +22,7 @@ public final class Gui7 extends ViewElement {
 
    public Gui7() {
       this.boolean1 = true;
-      this.imgH = ResUI.a.getHeight();
+      this.imgH = UiUtil.img1.getHeight();
    }
 
    private void a(Graphics g, boolean var2) {
@@ -32,9 +33,9 @@ public final class Gui7 extends ViewElement {
       }
 
       if (var2) {
-         g.drawImage(ResUI.a, this.k, this.l, 20);
+         g.drawImage(UiUtil.img1, this.k, this.l, 20);
       } else {
-         g.drawImage(ResUI.b, this.k, this.l, 20);
+         g.drawImage(UiUtil.img2, this.k, this.l, 20);
       }
 
       int var4 = 0;
@@ -46,29 +47,29 @@ public final class Gui7 extends ViewElement {
       }
 
       boolean var9 = false;
-      var5 = (ResUI.a.getHeight() / 2 - ResUI.allFontImagesHeight[5]) / 2;
+      var5 = (UiUtil.img1.getHeight() / 2 - UiUtil.allFontImagesHeight[5]) / 2;
       int var6 = var2 ? 5 : 9;
       int var7;
       if (this.str1 != null) {
-         var7 = Core9.a(this.str1, var6);
+         var7 = StringUtils.a(this.str1, var6);
          int var8 = var4 + 2 * this.d;
          if (var7 > this.imgW - var8 - this.d) {
             this.a(g, this.k + var8, this.l + var5, this.imgW - var8 - this.d, this.str1, var6);
          } else {
-            Core9.a(g, this.k + var8, this.l + var5, this.str1, var6);
+            StringUtils.a(g, this.k + var8, this.l + var5, this.str1, var6);
          }
       }
 
-      var5 = ResUI.a.getHeight() / 2 + (ResUI.a.getHeight() / 2 - ResUI.allFontImagesHeight[0]) / 2;
+      var5 = UiUtil.img1.getHeight() / 2 + (UiUtil.img1.getHeight() / 2 - UiUtil.allFontImagesHeight[0]) / 2;
       if (this.str2 != null) {
          var6 = var2 ? 0 : 4;
          var7 = var4 + 2 * this.d;
-         if (Core9.a(this.str2, var6) > this.imgW - var7 - this.d) {
+         if (StringUtils.a(this.str2, var6) > this.imgW - var7 - this.d) {
             this.a(g, this.k + var7, this.l + var5, this.imgW - var7 - this.d, this.str2, var6);
             return;
          }
 
-         Core9.a(g, this.k + var7, this.l + var5, this.str2, var6);
+         StringUtils.a(g, this.k + var7, this.l + var5, this.str2, var6);
       }
 
    }
@@ -79,18 +80,18 @@ public final class Gui7 extends ViewElement {
       int var9 = g.getClipWidth();
       int var10 = g.getClipHeight();
       String var11 = "...";
-      int var12 = Core9.a("...", var6);
-      g.setClip(var2, var3, var4 - var12, ResUI.allFontImagesHeight[var6]);
-      int var13 = Core9.a(var5, var6) - var4;
+      int var12 = StringUtils.a("...", var6);
+      g.setClip(var2, var3, var4 - var12, UiUtil.allFontImagesHeight[var6]);
+      int var13 = StringUtils.a(var5, var6) - var4;
       int var14 = Math.abs((this.c - 40 + var13) % (var13 * 2) - var13);
       if (this.c < 40) {
          var14 = 0;
       }
 
-      Core9.a(g, var2 - var14, var3, var5, var6);
+      StringUtils.a(g, var2 - var14, var3, var5, var6);
       g.setClip(var7, var8, var9, var10);
       if (this.c < 2) {
-         Core9.a(g, var2 + var4 - var12, var3, var11, var6);
+         StringUtils.a(g, var2 + var4 - var12, var3, var11, var6);
       }
 
    }

@@ -5,17 +5,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public final class BytesContentFactory {
-   private short type = 0;
-   private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-   private DataOutputStream dataOutputStream;
+    
+    private short type = 0;
+  
+    private ByteArrayOutputStream byteArrayOutputStream;
+    private DataOutputStream dataOutputStream;
 
-   public BytesContentFactory() {
-      this.dataOutputStream = new DataOutputStream(this.byteArrayOutputStream);
-   }
+    public BytesContentFactory() {
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+    }
 
    public final void addUtfString(String str) {
       try {
-         this.dataOutputStream.writeUTF(str);
+         dataOutputStream.writeUTF(str);
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -23,7 +26,7 @@ public final class BytesContentFactory {
 
    public final void addLong(long longData) {
       try {
-         this.dataOutputStream.writeLong(longData);
+         dataOutputStream.writeLong(longData);
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -31,7 +34,7 @@ public final class BytesContentFactory {
 
    public final void addInt(int intData) {
       try {
-         this.dataOutputStream.writeInt(intData);
+         dataOutputStream.writeInt(intData);
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -39,9 +42,9 @@ public final class BytesContentFactory {
 
    public final void addByte(byte byteData) {
       try {
-         this.dataOutputStream.writeByte(byteData);
-      } catch (IOException var3) {
-         var3.printStackTrace();
+         dataOutputStream.writeByte(byteData);
+      } catch (IOException e) {
+         e.printStackTrace();
       }
    }
 
@@ -51,15 +54,15 @@ public final class BytesContentFactory {
       byte[] bitesFromBAOS = this.byteArrayOutputStream.toByteArray();
 
       try {
-         dos.writeInt(StaticData.b);
+         dos.writeInt(StaticData.connectID);
          dos.writeUTF(StaticData.a);
          dos.writeShort(this.type);
          dos.writeInt(bitesFromBAOS.length);
          dos.write(bitesFromBAOS);
          dos.flush();
          baos.flush();
-      } catch (IOException var5) {
-         var5.printStackTrace();
+      } catch (IOException ioe) {
+         ioe.printStackTrace();
       }
 
       return baos.toByteArray();

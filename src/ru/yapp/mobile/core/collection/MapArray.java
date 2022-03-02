@@ -8,9 +8,9 @@ public final class MapArray {
 
    public final void add(String str, Object obj) {
       if (obj != null) {
-         for(int index = this.arraySize - 1; index >= 0; --index) {
+         for(int i = this.arraySize - 1; i >= 0; --i) {
             MapItem mapItem;
-            if ((mapItem = (MapItem)this.vector.elementAt(index)).key.equals(str)) {
+            if ((mapItem = (MapItem)this.vector.elementAt(i)).key.equals(str)) {
                mapItem.obj = obj;
                return;
             }
@@ -23,10 +23,10 @@ public final class MapArray {
    }
 
    public final Object get(String var1) {
-      for(int var2 = this.arraySize - 1; var2 >= 0; --var2) {
-         MapItem var3;
-         if ((var3 = (MapItem)this.vector.elementAt(var2)).key.equals(var1)) {
-            return var3.obj;
+      for(int i = this.arraySize - 1; i >= 0; --i) {
+         MapItem mapItem = (MapItem)this.vector.elementAt(i);
+         if (mapItem.key.equals(var1)) {
+            return mapItem.obj;
          }
       }
 

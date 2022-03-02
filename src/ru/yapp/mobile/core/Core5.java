@@ -26,7 +26,7 @@ public final class Core5 {
    }
 
    public static void b() {
-      a = StaticData.screenWidth - 4 - ResUI.d.getWidth();
+      a = StaticData.screenWidth - 4 - UiUtil.img4.getWidth();
       int1 = 2;
       int2 = 5;
       if (vector2.size() > 0) {
@@ -35,13 +35,13 @@ public final class Core5 {
 
       int var0 = int2;
 
-      for(int var1 = 0; var1 < vector2.size(); ++var1) {
-         ViewElement var2;
-         DataCounter var4;
-         if ((var2 = (ViewElement)vector2.elementAt(var1)) instanceof TextView) {
+      for(int i = 0; i < vector2.size(); ++i) {
+         ViewElement var2 = (ViewElement)vector2.elementAt(i);
+         DataCounter var4 = new DataCounter();
+         if (var2 instanceof TextView) {
             TextView var3 = (TextView)var2;
             if (var2.image != null) {
-               (var4 = new DataCounter()).a = var2.image.getWidth();
+               var4.a = var2.image.getWidth();
                var4.b = var2.image.getHeight();
                var4.c = 2;
                var4.d = var0;
@@ -54,9 +54,10 @@ public final class Core5 {
             var3.k = 2;
             a(var3);
          } else {
-            ImageView var5;
-            if (var2 instanceof ImageView && (var5 = (ImageView)var2).image != null) {
-               (var4 = new DataCounter()).c = var5.k;
+            ImageView var5 = (ImageView)var2;
+            var4 = new DataCounter();
+            if (var2 instanceof ImageView && var5.image != null) {
+               var4.c = var5.k;
                var4.d = var0;
                var4.a = var5.image.getWidth();
                var4.b = var5.image.getHeight();
@@ -72,7 +73,7 @@ public final class Core5 {
          }
 
          ViewElement var6;
-         if (var1 > 0 && (var6 = (ViewElement)vector2.elementAt(var1 - 1)).l + var6.imgH > var2.l + var2.imgH) {
+         if (i > 0 && (var6 = (ViewElement)vector2.elementAt(i - 1)).l + var6.imgH > var2.l + var2.imgH) {
             var2.imgH = var6.l + var6.imgH - var2.l;
          }
       }
@@ -91,7 +92,7 @@ public final class Core5 {
       int var6 = int3;
       int var7 = int4;
 
-      int var10;
+      int i;
       while(var4.length() > 0) {
          int var8;
          String var9;
@@ -99,13 +100,13 @@ public final class Core5 {
             var9 = var4.substring(0, var8);
             var5 = var5 + var9;
             var4 = var4.substring(var8);
-            var10 = Core9.a(var9, var0.style);
-            int1 += var10;
-            var7 -= var10;
+            i = StringUtils.a(var9, var0.style);
+            int1 += i;
+            var7 -= i;
          } else {
-            a(2, int2 + ResUI.allFontImagesHeight[var0.style] + 2);
+            a(2, int2 + UiUtil.allFontImagesHeight[var0.style] + 2);
             if ((var8 = a(var4, int4, var0.style)) > 0) {
-               int2 += ResUI.allFontImagesHeight[var0.style] + 2;
+               int2 += UiUtil.allFontImagesHeight[var0.style] + 2;
                int1 = 2;
                var1.addElement(var5);
                var2.addElement(new Integer(var6));
@@ -116,20 +117,20 @@ public final class Core5 {
                var9 = var4.substring(0, var8);
                var5 = var5 + var9;
                var4 = var4.substring(var8);
-               var10 = Core9.a(var9, var0.style);
-               int1 += var10;
-               var7 -= var10;
+               i = StringUtils.a(var9, var0.style);
+               int1 += i;
+               var7 -= i;
             } else {
                int var15;
                if ((var15 = b(var4, var7, var0.style)) > 0) {
                   String var17 = var4.substring(0, var15);
                   var5 = var5 + var17;
                   var4 = var4.substring(var15);
-                  int var11 = Core9.a(var17, var0.style);
+                  int var11 = StringUtils.a(var17, var0.style);
                   int1 += var11;
                   var7 -= var11;
                } else {
-                  int2 += ResUI.allFontImagesHeight[var0.style] + 2;
+                  int2 += UiUtil.allFontImagesHeight[var0.style] + 2;
                   int1 = 2;
                   var1.addElement(var5);
                   var2.addElement(new Integer(var6));
@@ -143,7 +144,7 @@ public final class Core5 {
          }
 
          if (boolean1) {
-            int2 += ResUI.allFontImagesHeight[var0.style] + 2;
+            int2 += UiUtil.allFontImagesHeight[var0.style] + 2;
             int1 = 2;
             var1.addElement(var5);
             var2.addElement(new Integer(var6));
@@ -159,10 +160,10 @@ public final class Core5 {
       if (var5.length() > 0) {
          var1.addElement(var5);
          var2.addElement(new Integer(var6));
-         int1 = var6 + Core9.a(var5, var0.style) + Core9.a;
+         int1 = var6 + StringUtils.a(var5, var0.style) + StringUtils.a;
       }
 
-      var0.imgH = int2 + ResUI.allFontImagesHeight[var0.style] + 2 - var0.l;
+      var0.imgH = int2 + UiUtil.allFontImagesHeight[var0.style] + 2 - var0.l;
       if (var0.image != null && var0.imgH < var0.image.getHeight()) {
          var0.imgH = var0.image.getHeight();
       }
@@ -170,16 +171,16 @@ public final class Core5 {
       byte[][] var14 = new byte[var1.size()][];
       int[] var16 = new int[var2.size()];
 
-      for(var10 = 0; var10 < var1.size(); ++var10) {
+      for(i = 0; i < var1.size(); ++i) {
          String var18;
-         byte[] var12 = new byte[(var18 = (String)var1.elementAt(var10)).length()];
+         byte[] var12 = new byte[(var18 = (String)var1.elementAt(i)).length()];
 
-         for(int var13 = 0; var13 < var18.length(); ++var13) {
-            var12[var13] = (byte)Core9.a(var18.charAt(var13));
+         for(int j = 0; j < var18.length(); ++j) {
+            var12[j] = (byte)StringUtils.a(var18.charAt(j));
          }
 
-         var14[var10] = var12;
-         var16[var10] = ((Integer)var2.elementAt(var10)).intValue();
+         var14[i] = var12;
+         var16[i] = ((Integer)var2.elementAt(i)).intValue();
       }
 
       var1.removeAllElements();
@@ -192,17 +193,17 @@ public final class Core5 {
       int3 = var0;
       int4 = a - int3;
 
-      for(int var2 = 0; var2 < vector1.size(); ++var2) {
+      for(int i = 0; i < vector1.size(); ++i) {
          DataCounter var3;
-         if ((var3 = (DataCounter)vector1.elementAt(var2)).d + var3.b + 2 < var1) {
-            vector1.removeElementAt(var2);
-            --var2;
-         } else if (var3.d <= var1 + ResUI.allFontImagesHeight[0] + 2 && var3.d + var3.b >= var1 - 2) {
-            if (int3 < var3.c - Core9.a) {
-               int4 = var3.c - int3 - Core9.a;
-            } else if (int3 < var3.c + var3.a + Core9.a) {
-               int4 -= var3.c + var3.a + Core9.a - int3;
-               int3 = var3.c + var3.a + Core9.a;
+         if ((var3 = (DataCounter)vector1.elementAt(i)).d + var3.b + 2 < var1) {
+            vector1.removeElementAt(i);
+            --i;
+         } else if (var3.d <= var1 + UiUtil.allFontImagesHeight[0] + 2 && var3.d + var3.b >= var1 - 2) {
+            if (int3 < var3.c - StringUtils.a) {
+               int4 = var3.c - int3 - StringUtils.a;
+            } else if (int3 < var3.c + var3.a + StringUtils.a) {
+               int4 -= var3.c + var3.a + StringUtils.a - int3;
+               int3 = var3.c + var3.a + StringUtils.a;
             }
          }
       }
@@ -222,14 +223,14 @@ public final class Core5 {
       boolean var5 = false;
 
       while(var3 < var0.length() && !var5) {
-         char var6 = Core9.a(var0.charAt(var3));
+         char var6 = StringUtils.a(var0.charAt(var3));
          int var7;
-         if ((var7 = ResUI.w[var6 + (var2 << 8)]) == 32) {
-            var7 = Core9.a;
+         if ((var7 = UiUtil.byteArr2560[var6 + (var2 << 8)]) == 32) {
+            var7 = StringUtils.a;
          }
 
          if (var4 + var7 < var1) {
-            var4 += var7 + Core9.b;
+            var4 += var7 + StringUtils.b;
             ++var3;
          } else {
             var5 = true;
@@ -250,9 +251,9 @@ public final class Core5 {
 
       while(var2 < var0.length() && !var3) {
          char var4;
-         if ((var4 = Core9.a(var0.charAt(var2))) != ' ' && var4 != '\n') {
+         if ((var4 = StringUtils.a(var0.charAt(var2))) != ' ' && var4 != '\n') {
             ++var2;
-            int5 += ResUI.w[var4 + (var1 << 8)] + Core9.b;
+            int5 += UiUtil.byteArr2560[var4 + (var1 << 8)] + StringUtils.b;
          } else {
             ++var2;
             var3 = true;

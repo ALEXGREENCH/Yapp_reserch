@@ -3,22 +3,22 @@ package ru.yapp.mobile;
 import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
-import ru.yapp.mobile.book.Book;
+import ru.yapp.mobile.book.BookUtil;
 import ru.yapp.mobile.browser.BrowserForm;
 import ru.yapp.mobile.browser.BrowserRender;
-import ru.yapp.mobile.core.ResUI;
+import ru.yapp.mobile.core.UiUtil;
 import ru.yapp.mobile.core.StaticData;
-import ru.yapp.mobile.core.Audio;
-import ru.yapp.mobile.core.DB;
-import ru.yapp.mobile.net.SocketConnector;
+import ru.yapp.mobile.core.AudioUtil;
+import ru.yapp.mobile.core.BdUtil;
+import ru.yapp.mobile.net.NetworkUtil;
 
 public class Yapp extends MIDlet {
+    
     public static Yapp yappMidlet;
     public static Display display;
-    public static Audio audio;
+    public static AudioUtil audio;
    
     private static boolean isVisible = false;
-
 
     protected void startApp() throws MIDletStateChangeException {
         Log("FREE MEMORY ->" + Runtime.getRuntime().freeMemory());
@@ -26,7 +26,7 @@ public class Yapp extends MIDlet {
         yappMidlet = this;
         BrowserForm.bool1 = false;
         if (!isVisible) {
-            ResUI.createImageSplash();
+            UiUtil.createImageSplash();
             ScreenCanvas screenCanvas = new ScreenCanvas();
             display.setCurrent(screenCanvas);
             try {
@@ -48,34 +48,34 @@ public class Yapp extends MIDlet {
             }
 
             try {
-                ResUI.init();
+                UiUtil.init();
             } catch (Exception e) {
                 e.printStackTrace();
             }
          
             try {
-                DB.init();
+                BdUtil.init();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             try {
-                Book.init();
+                BookUtil.init();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             
             try {
-                audio = new Audio();
+                audio = new AudioUtil();
                 audio.init();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             
-            SocketConnector.init();
+            NetworkUtil.init();
             
-            //Browser2.renderAuthScreen(new byte[]{1, 0, 99, 0, 0, 0, 0}, "Yapp! beta 1.7");
-            BrowserRender.renderScreenDemo();
+            BrowserRender.renderAuthScreen(new byte[]{1, 0, 99, 0, 0, 0, 0}, "Yapp! beta 1.7");
+            //BrowserRender.renderScreenDemo();
             ScreenCanvas.boolean2 = true;
             BrowserForm.prepareRender = true;
             ScreenCanvas.screenMode = 1;
@@ -102,15 +102,15 @@ public class Yapp extends MIDlet {
         ScreenCanvas.screenMode = 0;
         ScreenCanvas.textDialog = "Завершение работы приложения...";
         ScreenCanvas.boolean2 = true;
-        Book.saveBookInBD();
+        BookUtil.saveBookInBD();
         try {
-            DB.close();
+            BdUtil.destroy();
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        SocketConnector.disconnect();
-        ScreenCanvas.close();
+        NetworkUtil.destroy();
+        ScreenCanvas.destroy();
       
         this.notifyDestroyed();
         Log("MIDlet destroed");

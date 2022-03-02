@@ -4,6 +4,7 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 public final class Gui4 extends ViewElement {
+    
    public int a = 0;
    public int b = 0;
    public Image image = null;
